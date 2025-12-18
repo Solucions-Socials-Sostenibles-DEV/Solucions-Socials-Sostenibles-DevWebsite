@@ -1,7 +1,7 @@
 #root {
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0.5rem 1rem;
   text-align: center;
 }
 
@@ -18,8 +18,8 @@
   align-items: center;
   width: 100%;
   max-width: 1200px;
-  padding: 1rem 0;
-  margin-bottom: 2rem;
+  padding: 2rem 0 1rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .navbar-brand {
@@ -29,7 +29,7 @@
 }
 
 .navbar-logo {
-  height: 50px;
+  height: 40px;
   width: auto;
 }
 
@@ -77,9 +77,9 @@
 }
 
 .header h2 {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   color: var(--color-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
   margin-top: 0;
 }
 
@@ -87,13 +87,13 @@
   font-size: 1.2rem;
   color: #666;
   margin: 0;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 .app-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
   max-width: 1200px;
 }
@@ -101,7 +101,7 @@
 .app-card {
   background: white;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
@@ -116,7 +116,7 @@
 }
 
 .app-icon {
-  font-size: 4rem;
+  font-size: 3rem;
   margin-bottom: 0.5rem;
 }
 
@@ -153,8 +153,9 @@
 .footer {
   color: #999;
   font-size: 0.9rem;
-  margin-top: 4rem;
+  margin-top: auto;
   margin-bottom: 2rem;
+  padding-top: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
