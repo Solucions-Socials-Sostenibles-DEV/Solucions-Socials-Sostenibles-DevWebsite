@@ -51,6 +51,11 @@ function App() {
       </main>
       
       <footer className="footer">
+        <div className="footer-links">
+          <a href="#privacidad">Privacidad</a>
+          <a href="#cookies">Cookies</a>
+          <a href="#ayuda">Centro de ayuda</a>
+        </div>
         <p>© {new Date().getFullYear()} IDONI BONCOR. Todos los derechos reservados.</p>
       </footer>
     </div>
