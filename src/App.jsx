@@ -45,7 +45,10 @@ function App() {
             <div className="app-icon">{app.icon}</div>
             <h2>{app.name}</h2>
             <p>{app.description}</p>
-            <button className="download-btn">Descargar</button>
+            <div className="card-actions">
+              <button className="download-btn">Descargar</button>
+              <button className="doc-btn">Documentación</button>
+            </div>
           </div>
         ))}
       </main>

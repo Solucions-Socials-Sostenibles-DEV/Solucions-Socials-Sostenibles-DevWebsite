@@ -6,6 +6,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
 
 .container {
   flex: 1;
@@ -145,9 +146,32 @@
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
-  margin-top: 1rem;
-  width: 100%;
+  margin-top: auto;
+  flex: 1;
   transition: background-color 0.2s;
+}
+
+.card-actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.doc-btn {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  padding: 0.8rem 1rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  flex: 1;
+  transition: all 0.2s;
+}
+
+.doc-btn:hover {
+  background-color: rgba(238, 21, 102, 0.1);
 }
 
 .download-btn:hover {
