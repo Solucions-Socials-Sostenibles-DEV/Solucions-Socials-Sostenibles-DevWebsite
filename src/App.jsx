@@ -35,7 +35,7 @@ function App() {
       </nav>
 
       <header className="header" id="inicio">
-        <h2>IDONI BONCOR</h2>
+        <h2>SOLUCIONS SOCIALS</h2>
         <p>Portal de Descargas Corporativo</p>
       </header>
 
