@@ -9,20 +9,85 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
   width: 100%;
 }
 
-.header h1 {
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-logo {
+  height: 50px;
+  width: auto;
+}
+
+.navbar-brand h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.navbar-links a:hover {
+  border-color: var(--color-primary);
+}
+
+.login-btn {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.login-btn:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.header h2 {
   font-size: 3.5rem;
   color: var(--color-primary);
   margin-bottom: 0.5rem;
+  margin-top: 0;
 }
 
 .header p {
   font-size: 1.2rem;
   color: #666;
   margin: 0;
+  margin-bottom: 1.8rem;
 }
 
 .app-grid {

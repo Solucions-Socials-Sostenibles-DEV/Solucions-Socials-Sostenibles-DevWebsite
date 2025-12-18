@@ -22,8 +22,20 @@ function App() {
 
   return (
     <div className="container">
-      <header className="header">
-        <h1>IDONI BONCOR</h1>
+      <nav className="navbar">
+        <div className="navbar-brand">
+          <img src="/logo.png" alt="Logo" className="navbar-logo" />
+          <h1>SOLUCIONS SOCIALS INTERNAL</h1>
+        </div>
+        <ul className="navbar-links">
+          <li><a href="#inicio">INICIO</a></li>
+          <li><a href="#contacto">CONTACTO</a></li>
+          <li><button className="login-btn">INICIAR SESION</button></li>
+        </ul>
+      </nav>
+
+      <header className="header" id="inicio">
+        <h2>IDONI BONCOR</h2>
         <p>Portal de Descargas Corporativo</p>
       </header>
 
