@@ -6,17 +6,17 @@ function App() {
     {
       name: 'SSS KRONOS DESKTOP',
       description: 'Aplicación de escritorio para la gestión integral.',
-      icon: '🖥️' // Placeholder icon
+      icon: '🖥️' 
     },
     {
       name: 'SSS KRONOS MOBILE',
       description: 'Solución móvil para conectividad en cualquier lugar.',
-      icon: '📱' // Placeholder icon
+      icon: '📱' 
     },
     {
-      name: 'IDONI RECETAS',
-      description: 'Gestión y consulta de recetas corporativas.',
-      icon: '🍳' // Placeholder icon
+      name: 'IDONI TIENDA',
+      description: 'Gestión y consulta de elementos relacionados con la tienda',
+      icon: '🍳'  
     }
   ]
 
@@ -54,7 +54,7 @@ function App() {
         ))}
       </main>
       
-      <footer className="footer">
+      <footer className="footer"> 
         <div className="footer-links">
           <a href="#privacidad">Privacidad</a>
           <a href="#cookies">Cookies</a>
