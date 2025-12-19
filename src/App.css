@@ -216,63 +216,152 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   #root {
-    padding: 0.5rem;
+    padding: 0; /* Remove root padding to allow full-width heroes */
+    overflow-x: hidden;
   }
 
+  .container {
+    padding: 0 1.5rem; /* Comfortable side padding */
+    width: auto;
+  }
+
+  /* Navbar */
   .navbar {
-    flex-direction: column;
-    gap: 1rem;
     padding: 1rem 0;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2000;
   }
 
   .navbar-brand {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .navbar-links {
-    flex-direction: column;
+    justify-content: space-between;
     width: 100%;
     gap: 1rem;
-    padding-bottom: 1rem;
-  }
-  
-  .navbar-links li {
-    width: 100%;
   }
 
-  .navbar-links a, 
-  .navbar-links button {
-    display: block;
+  .navbar-logo {
+    height: 32px; /* Slightly smaller logo */
+  }
+
+  .navbar-brand h1 {
+    font-size: 0.9rem; /* Finer text */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Slide-in Menu (Drawer) */
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 280px; /* Fixed width for better control */
+    background: white;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+    gap: 1.5rem;
+    box-shadow: -5px 0 30px rgba(0,0,0,0.15);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3000;
+    display: flex;
+  }
+
+  /* ... (overlay styles unused in this block, keeping contextual) ... */
+
+  /* Mobile Menu Header */
+  .mobile-only-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    padding: 0.5rem 0;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* SVG Icons */
+  .hamburger svg,
+  .close-btn svg {
+    display: block;
+    width: 28px;
+    height: 28px;
   }
   
-  .login-btn {
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+  }
+
+  /* ... */
+
+  /* Grid & Cards - CRITICAL FIXES */
+  .app-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+    width: 100%; /* Ensure grid doesn't overflow */
+    box-sizing: border-box;
+  }
+  
+  .app-card {
+    padding: 1.5rem;
+    width: 100%; /* Fix width */
+    box-sizing: border-box; /* Prevent padding form increasing width */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Buttons Layout */
+  .card-actions {
+    display: flex;     
+    flex-direction: column; /* Force vertical stack on mobile */
+    gap: 0.8rem;
     width: 100%;
     box-sizing: border-box;
   }
-
-  .header h2 {
-    font-size: 1.8rem;
-  }
-
-  .app-grid {
-    grid-template-columns: 1fr;
-    padding: 0 1rem;
-  }
   
-  .card-actions {
-    flex-direction: column;
-  }
-  
+  /* Reset flex properties for mobile buttons to ensure they behave */
   .doc-btn, 
-  .history-btn {
-    flex: 1 1 100%;
+  .history-btn,
+  .download-btn {
+    flex: none; /* Disable flex growing logic from desktop */
+    width: 100%; /* Full width */
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    padding: 0.8rem 1rem; /* Adjust padding to not be huge */
   }
-
+  
+  /* Keep download button primary but standard size */
+  .download-btn {
+    order: 0; /* Reset order */
+  }
+  
+  /* Footer */
+  .footer {
+    padding: 3rem 1.5rem;
+    text-align: left;
+    align-items: flex-start;
+  }
+  
   .footer-links {
-    flex-direction: column;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: flex-start;
+  }
+}
+
+/* Desktop Only */
+@media (min-width: 769px) {
+  .hamburger, 
+  .mobile-only-header,
+  .navbar-overlay {
+    display: none !important;
   }
 }
