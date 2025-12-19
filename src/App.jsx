@@ -48,6 +48,7 @@ function App() {
             <div className="card-actions">
               <button className="download-btn">Descargar</button>
               <button className="doc-btn">Documentación</button>
+              <button className="history-btn">Notas de Versión</button>
             </div>
           </div>
         ))}
