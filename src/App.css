@@ -212,3 +212,67 @@
 .footer-links a:hover {
   color: var(--color-primary);
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #root {
+    padding: 0.5rem;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .navbar-brand {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .navbar-links li {
+    width: 100%;
+  }
+
+  .navbar-links a, 
+  .navbar-links button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+  
+  .login-btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .header h2 {
+    font-size: 1.8rem;
+  }
+
+  .app-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+  }
+  
+  .doc-btn, 
+  .history-btn {
+    flex: 1 1 100%;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
