@@ -19,10 +19,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  /* Prevent scrolling on the page level */
+}
+
+body {
   min-width: 320px;
-  min-height: 100vh;
+  background-color: var(--color-bg);
 }
 
 /* Reset buttons to a base style if needed globally */
