@@ -16,8 +16,8 @@ function App() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
+
   const [currentView, setCurrentView] = useState('home'); // 'home' or 'dashboard'
-  const [downloads, setDownloads] = useState({ desktop: null, mobile: null });
 
   useEffect(() => {
     // Check active session on load
@@ -41,29 +41,10 @@ function App() {
     });
 
     // Fetch latest versions
-    fetchLatestVersion('SSS KRONOS DESKTOP').then(url => setDownloads(d => ({ ...d, desktop: url })));
-    fetchLatestVersion('SSS KRONOS MOBILE').then(url => setDownloads(d => ({ ...d, mobile: url })));
-
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchLatestVersion = async (appName) => {
-    try {
-      const { data, error } = await supabase
-        .from('app_versions')
-        .select('file_url')
-        .eq('app_name', appName)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
 
-      if (error) return null;
-      return data.file_url;
-    } catch (e) {
-      console.error(`Error fetching version for ${appName}`, e);
-      return null;
-    }
-  };
 
 
   const handleLogout = async () => {
@@ -76,13 +57,13 @@ function App() {
       name: 'SSS KRONOS DESKTOP',
       description: 'Aplicación de escritorio para la gestión integral.',
       icon: '🖥️',
-      link: downloads.desktop
+      link: 'LINK_DE_DRIVE_DESKTOP_AQUI' // TODO: Replace with actual Drive Link
     },
     {
       name: 'SSS KRONOS MOBILE',
       description: 'Solución móvil para conectividad en cualquier lugar.',
       icon: '📱',
-      link: downloads.mobile
+      link: 'LINK_DE_DRIVE_MOBILE_AQUI' // TODO: Replace with actual Drive Link
     }
   ]
 
