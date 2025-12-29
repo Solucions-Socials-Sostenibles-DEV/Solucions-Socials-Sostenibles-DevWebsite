@@ -5,6 +5,7 @@ import HelpModal from './HelpModal';
 import CookiesModal from './CookiesModal';
 import PrivacyModal from './PrivacyModal';
 import LoginModal from './LoginModal';
+import AdminDashboard from './AdminDashboard';
 import { supabase } from './supabaseClient';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [currentView, setCurrentView] = useState('home'); // 'home' or 'dashboard'
 
   useEffect(() => {
     // Check active session on load
@@ -46,6 +48,7 @@ function App() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setCurrentView('home');
   };
   const apps = [
     {
@@ -57,11 +60,6 @@ function App() {
       name: 'SSS KRONOS MOBILE',
       description: 'Solución móvil para conectividad en cualquier lugar.',
       icon: '📱'
-    },
-    {
-      name: 'IDONI TIENDA',
-      description: 'Gestión y consulta de elementos relacionados con la tienda',
-      icon: '🍳'
     }
   ]
 
@@ -92,7 +90,7 @@ function App() {
           <li>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Admin</span>
+                <button className="nav-btn-link" onClick={() => { setCurrentView('dashboard'); setIsMenuOpen(false); }}>PANEL</button>
                 <button className="login-btn" onClick={handleLogout}>CERRAR</button>
               </div>
             ) : (
@@ -102,25 +100,31 @@ function App() {
         </ul>
       </nav>
 
-      <header className="header" id="inicio">
-        <h2>SOLUCIONS SOCIALS</h2>
-        <p>Portal de Descargas Corporativo</p>
-      </header>
+      {currentView === 'dashboard' && user ? (
+        <AdminDashboard onBack={() => setCurrentView('home')} />
+      ) : (
+        <>
+          <header className="header" id="inicio">
+            <h2>SOLUCIONS SOCIALS</h2>
+            <p>Portal de Descargas Corporativo</p>
+          </header>
 
-      <main className="app-grid">
-        {apps.map((app, index) => (
-          <div key={index} className="app-card">
-            <div className="app-icon">{app.icon}</div>
-            <h2>{app.name}</h2>
-            <p>{app.description}</p>
-            <div className="card-actions">
-              <button className="download-btn">Descargar</button>
-              <button className="doc-btn">Documentación</button>
-              <button className="history-btn">Notas de Versión</button>
-            </div>
-          </div>
-        ))}
-      </main>
+          <main className="app-grid">
+            {apps.map((app, index) => (
+              <div key={index} className="app-card">
+                <div className="app-icon">{app.icon}</div>
+                <h2>{app.name}</h2>
+                <p>{app.description}</p>
+                <div className="card-actions">
+                  <button className="download-btn">Descargar</button>
+                  <button className="doc-btn">Documentación</button>
+                  <button className="history-btn">Notas de Versión</button>
+                </div>
+              </div>
+            ))}
+          </main>
+        </>
+      )}
 
       <footer className="footer">
         <div className="footer-links">
