@@ -1,23 +1,25 @@
 import { useState } from 'react'
 import './App.css'
+import ContactModal from './ContactModal';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
   const apps = [
     {
       name: 'SSS KRONOS DESKTOP',
       description: 'Aplicación de escritorio para la gestión integral.',
-      icon: '🖥️' 
+      icon: '🖥️'
     },
     {
       name: 'SSS KRONOS MOBILE',
       description: 'Solución móvil para conectividad en cualquier lugar.',
-      icon: '📱' 
+      icon: '📱'
     },
     {
       name: 'IDONI TIENDA',
       description: 'Gestión y consulta de elementos relacionados con la tienda',
-      icon: '🍳'  
+      icon: '🍳'
     }
   ]
 
@@ -29,22 +31,22 @@ function App() {
           <h1>SOLUCIONS SOCIALS INTERNAL</h1>
           <button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Menu">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         </div>
         <div className={`navbar-overlay ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(false)}></div>
         <ul className={`navbar-links ${isMenuOpen ? 'active' : ''}`}>
           <li className="mobile-only-header">
-             <span className="menu-title">MENU</span>
-             <button className="close-btn" onClick={() => setIsMenuOpen(false)} aria-label="Close">
-               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                 <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-               </svg>
-             </button>
+            <span className="menu-title">MENU</span>
+            <button className="close-btn" onClick={() => setIsMenuOpen(false)} aria-label="Close">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </li>
           <li><a href="#inicio" onClick={() => setIsMenuOpen(false)}>INICIO</a></li>
-          <li><a href="#contacto" onClick={() => setIsMenuOpen(false)}>CONTACTO</a></li>
+          <li><button className="nav-btn-link" onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}>CONTACTO</button></li>
           <li><button className="login-btn">INICIAR SESION</button></li>
         </ul>
       </nav>
@@ -68,8 +70,8 @@ function App() {
           </div>
         ))}
       </main>
-      
-      <footer className="footer"> 
+
+      <footer className="footer">
         <div className="footer-links">
           <a href="#privacidad">Privacidad</a>
           <a href="#cookies">Cookies</a>
@@ -77,6 +79,7 @@ function App() {
         </div>
         <p>© {new Date().getFullYear()} IDONI BONCOR. Todos los derechos reservados.</p>
       </footer>
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </div>
   )
 }
