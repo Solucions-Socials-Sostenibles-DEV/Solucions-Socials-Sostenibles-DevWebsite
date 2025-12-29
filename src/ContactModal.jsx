@@ -30,8 +30,7 @@ function ContactModal({ isOpen, onClose }) {
                     {
                         name: formData.name,
                         subject: formData.subject,
-                        message: formData.message,
-                        created_at: new Date()
+                        message: formData.message
                     }
                 ]);
 
