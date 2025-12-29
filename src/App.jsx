@@ -17,13 +17,12 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [currentView, setCurrentView] = useState('home'); // 'home' or 'dashboard'
+  const [downloads, setDownloads] = useState({ desktop: null, mobile: null });
 
   useEffect(() => {
     // Check active session on load
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        // Verify role again just to be safe (optional but good practice)
-        // For now, we trust the session or rely on RLS if we were fetching data
         supabase.from('user_profiles').select('role').eq('id', session.user.id).single()
           .then(({ data }) => {
             if (data && data.role === 'admin') {
@@ -39,11 +38,33 @@ function App() {
       if (!session) {
         setUser(null);
       }
-      // We handle setting user on explicit login success usually, to control role check flow better
     });
+
+    // Fetch latest versions
+    fetchLatestVersion('SSS KRONOS DESKTOP').then(url => setDownloads(d => ({ ...d, desktop: url })));
+    fetchLatestVersion('SSS KRONOS MOBILE').then(url => setDownloads(d => ({ ...d, mobile: url })));
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const fetchLatestVersion = async (appName) => {
+    try {
+      const { data, error } = await supabase
+        .from('app_versions')
+        .select('file_url')
+        .eq('app_name', appName)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error) return null;
+      return data.file_url;
+    } catch (e) {
+      console.error(`Error fetching version for ${appName}`, e);
+      return null;
+    }
+  };
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -54,12 +75,14 @@ function App() {
     {
       name: 'SSS KRONOS DESKTOP',
       description: 'Aplicación de escritorio para la gestión integral.',
-      icon: '🖥️'
+      icon: '🖥️',
+      link: downloads.desktop
     },
     {
       name: 'SSS KRONOS MOBILE',
       description: 'Solución móvil para conectividad en cualquier lugar.',
-      icon: '📱'
+      icon: '📱',
+      link: downloads.mobile
     }
   ]
 
@@ -116,7 +139,11 @@ function App() {
                 <h2>{app.name}</h2>
                 <p>{app.description}</p>
                 <div className="card-actions">
-                  <button className="download-btn">Descargar</button>
+                  {app.link ? (
+                    <a href={app.link} className="download-btn" style={{ textDecoration: 'none', textAlign: 'center' }} target="_blank" rel="noopener noreferrer">Descargar</a>
+                  ) : (
+                    <button className="download-btn" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>No disponible</button>
+                  )}
                   <button className="doc-btn">Documentación</button>
                   <button className="history-btn">Notas de Versión</button>
                 </div>
