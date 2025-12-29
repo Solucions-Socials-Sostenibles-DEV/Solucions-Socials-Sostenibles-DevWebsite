@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { supabase } from './supabaseClient';
 import './ContactModal.css';
 
 function ContactModal({ isOpen, onClose }) {
@@ -7,6 +8,7 @@ function ContactModal({ isOpen, onClose }) {
         subject: '',
         message: ''
     });
+    const [loading, setLoading] = useState(false);
 
     if (!isOpen) return null;
 
@@ -17,12 +19,33 @@ function ContactModal({ isOpen, onClose }) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const { name, subject, message } = formData;
-        const mailtoLink = `mailto:comunicacio@solucionssocials.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nombre: ${name}\n\nMensaje:\n${message}`)}`;
-        window.location.href = mailtoLink;
-        onClose();
+        setLoading(true);
+
+        try {
+            const { error } = await supabase
+                .from('contact_messages')
+                .insert([
+                    {
+                        name: formData.name,
+                        subject: formData.subject,
+                        message: formData.message,
+                        created_at: new Date()
+                    }
+                ]);
+
+            if (error) throw error;
+
+            alert('Mensaje enviado correctamente. Nos pondremos en contacto contigo pronto.');
+            setFormData({ name: '', subject: '', message: '' });
+            onClose();
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -47,6 +70,7 @@ function ContactModal({ isOpen, onClose }) {
                             value={formData.name}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                             placeholder="Tu nombre"
                         />
                     </div>
@@ -60,6 +84,7 @@ function ContactModal({ isOpen, onClose }) {
                             value={formData.subject}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                             placeholder="Asunto del mensaje"
                         />
                     </div>
@@ -72,13 +97,14 @@ function ContactModal({ isOpen, onClose }) {
                             value={formData.message}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                             placeholder="Escribe tu mensaje aquí..."
                             rows="4"
                         />
                     </div>
 
-                    <button type="submit" className="submit-btn">
-                        Enviar Mensaje
+                    <button type="submit" className="submit-btn" disabled={loading}>
+                        {loading ? 'Enviando...' : 'Enviar Mensaje'}
                     </button>
                 </form>
             </div>
