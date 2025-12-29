@@ -2,11 +2,13 @@ import { useState } from 'react'
 import './App.css'
 import ContactModal from './ContactModal';
 import HelpModal from './HelpModal';
+import CookiesModal from './CookiesModal';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isCookiesOpen, setIsCookiesOpen] = useState(false);
   const apps = [
     {
       name: 'SSS KRONOS DESKTOP',
@@ -76,7 +78,7 @@ function App() {
       <footer className="footer">
         <div className="footer-links">
           <a href="#privacidad">Privacidad</a>
-          <a href="#cookies">Cookies</a>
+          <button className="nav-btn-link" style={{ fontSize: '0.8rem', color: '#666' }} onClick={() => setIsCookiesOpen(true)}>Cookies</button>
           <button className="nav-btn-link" style={{ fontSize: '0.8rem', color: '#666' }} onClick={() => setIsHelpOpen(true)}>Centro de ayuda</button>
         </div>
         <p>© {new Date().getFullYear()} IDONI BONCOR. Todos los derechos reservados.</p>
@@ -87,6 +89,7 @@ function App() {
         onClose={() => setIsHelpOpen(false)}
         onOpenContact={() => setIsContactOpen(true)}
       />
+      <CookiesModal isOpen={isCookiesOpen} onClose={() => setIsCookiesOpen(false)} />
     </div>
   )
 }
