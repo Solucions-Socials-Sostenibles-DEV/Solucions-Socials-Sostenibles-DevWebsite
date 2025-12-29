@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import ContactModal from './ContactModal';
 import HelpModal from './HelpModal';
 import CookiesModal from './CookiesModal';
 import PrivacyModal from './PrivacyModal';
+import LoginModal from './LoginModal';
+import { supabase } from './supabaseClient';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +13,40 @@ function App() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isCookiesOpen, setIsCookiesOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check active session on load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        // Verify role again just to be safe (optional but good practice)
+        // For now, we trust the session or rely on RLS if we were fetching data
+        supabase.from('user_profiles').select('role').eq('id', session.user.id).single()
+          .then(({ data }) => {
+            if (data && data.role === 'admin') {
+              setUser(session.user);
+            } else {
+              supabase.auth.signOut();
+            }
+          });
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        setUser(null);
+      }
+      // We handle setting user on explicit login success usually, to control role check flow better
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+  };
   const apps = [
     {
       name: 'SSS KRONOS DESKTOP',
@@ -53,7 +89,16 @@ function App() {
           </li>
           <li><a href="#inicio" onClick={() => setIsMenuOpen(false)}>INICIO</a></li>
           <li><button className="nav-btn-link" onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}>CONTACTO</button></li>
-          <li><button className="login-btn">INICIAR SESION</button></li>
+          <li>
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Admin</span>
+                <button className="login-btn" onClick={handleLogout}>CERRAR</button>
+              </div>
+            ) : (
+              <button className="login-btn" onClick={() => setIsLoginOpen(true)}>INICIAR SESION</button>
+            )}
+          </li>
         </ul>
       </nav>
 
@@ -93,6 +138,11 @@ function App() {
       />
       <CookiesModal isOpen={isCookiesOpen} onClose={() => setIsCookiesOpen(false)} />
       <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onLoginSuccess={(user) => setUser(user)}
+      />
     </div>
   )
 }
