@@ -40,7 +40,7 @@ function CookiesModal({ isOpen, onClose }) {
                     </button>
                 </div>
             </div>
-        </div>
+        </div> //test
     );
 }
 
