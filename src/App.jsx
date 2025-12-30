@@ -63,7 +63,8 @@ function App() {
       name: 'SSS KRONOS MOBILE',
       description: 'Solución móvil para conectividad en cualquier lugar.',
       icon: '📱',
-      link: 'LINK_DE_DRIVE_MOBILE_AQUI' // TODO: Replace with actual Drive Link
+      link: 'LINK_DE_DRIVE_MOBILE_AQUI', // TODO: Replace with actual Drive Link
+      docLink: 'https://docs.google.com/document/d/1VyEojHDf-NtNp4Ufff_hr-TpM_tW7enjEtEMNN7hdHk/edit?usp=sharing'
     }
   ]
 
@@ -125,7 +126,11 @@ function App() {
                   ) : (
                     <button className="download-btn" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>No disponible</button>
                   )}
-                  <button className="doc-btn">Documentación</button>
+                  {app.docLink ? (
+                    <a href={app.docLink} className="doc-btn" style={{ textDecoration: 'none', textAlign: 'center' }} target="_blank" rel="noopener noreferrer">Documentación</a>
+                  ) : (
+                    <button className="doc-btn">Documentación</button>
+                  )}
                   <button className="history-btn">Notas de Versión</button>
                 </div>
               </div>
