@@ -19,10 +19,16 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false);
+  const [selectedRelease, setSelectedRelease] = useState(null);
 
   const { release: mobileRelease, loading: mobileLoading } = useGitHubRelease(
     'Solucions-Socials-Sostenibles-DEV',
     'Solucions-Socials-Sostenibles-Kronos-Mobile'
+  );
+
+  const { release: desktopRelease, loading: desktopLoading } = useGitHubRelease(
+    'cr4zyp4y4n',
+    'Solucions-Socials-Sostenibles-Kronos'
   );
 
   const [currentView, setCurrentView] = useState('home'); // 'home' or 'dashboard'
@@ -65,7 +71,11 @@ function App() {
       name: 'SSS KRONOS DESKTOP',
       description: 'Aplicación de escritorio para la gestión integral.',
       icon: '🖥️',
-      link: 'LINK_DE_DRIVE_DESKTOP_AQUI' // TODO: Replace with actual Drive Link
+      link: desktopRelease?.assets?.[1]?.browser_download_url || '#', // Assuming .exe is the second asset or safely defaults
+      docLink: null,
+      isMobile: false,
+      release: desktopRelease,
+      loading: desktopLoading
     },
     {
       name: 'SSS KRONOS MOBILE',
@@ -73,7 +83,9 @@ function App() {
       icon: '📱',
       link: mobileRelease?.assets?.[0]?.browser_download_url || '#',
       docLink: 'https://docs.google.com/document/d/1VyEojHDf-NtNp4Ufff_hr-TpM_tW7enjEtEMNN7hdHk/edit?usp=sharing',
-      isMobile: true
+      isMobile: true,
+      release: mobileRelease,
+      loading: mobileLoading
     }
   ]
 
@@ -132,11 +144,11 @@ function App() {
                 <div className="card-actions">
                   {app.link && app.link !== '#' ? (
                     <a href={app.link} className="download-btn" style={{ textDecoration: 'none', textAlign: 'center' }} target={app.isMobile ? "_self" : "_blank"} rel="noopener noreferrer">
-                      {app.isMobile && mobileLoading ? 'Cargando...' : 'Descargar'}
+                      {app.loading ? 'Cargando...' : 'Descargar'}
                     </a>
                   ) : (
                     <button className="download-btn" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>
-                      {app.isMobile && mobileLoading ? 'Cargando...' : 'No disponible'}
+                      {app.loading ? 'Cargando...' : 'No disponible'}
                     </button>
                   )}
                   {app.docLink ? (
@@ -144,16 +156,17 @@ function App() {
                   ) : (
                     <button className="doc-btn">Documentación</button>
                   )}
-                  {app.isMobile && (
-                    <button
-                      className="history-btn"
-                      onClick={() => setIsReleaseNotesOpen(true)}
-                      disabled={!mobileRelease}
-                      style={!mobileRelease ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
-                    >
-                      Notas de Versión
-                    </button>
-                  )}
+                  <button
+                    className="history-btn"
+                    onClick={() => {
+                      setSelectedRelease(app.release);
+                      setIsReleaseNotesOpen(true);
+                    }}
+                    disabled={!app.release}
+                    style={!app.release ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                  >
+                    Notas de Versión
+                  </button>
                 </div>
               </div>
             ))}
@@ -185,8 +198,8 @@ function App() {
       <ReleaseNotesModal
         isOpen={isReleaseNotesOpen}
         onClose={() => setIsReleaseNotesOpen(false)}
-        releaseNotes={mobileRelease?.body}
-        tagName={mobileRelease?.tag_name}
+        releaseNotes={selectedRelease?.body}
+        tagName={selectedRelease?.tag_name}
       />
     </div>
   )
