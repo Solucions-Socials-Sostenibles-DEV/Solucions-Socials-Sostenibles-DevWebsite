@@ -7,6 +7,8 @@ import PrivacyModal from './PrivacyModal';
 import LoginModal from './LoginModal';
 import AdminDashboard from './AdminDashboard';
 import { supabase } from './supabaseClient';
+import ReleaseNotesModal from './ReleaseNotesModal';
+import { useGitHubRelease } from './hooks/useGitHubRelease';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,6 +18,12 @@ function App() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false);
+
+  const { release: mobileRelease, loading: mobileLoading } = useGitHubRelease(
+    'Solucions-Socials-Sostenibles-DEV',
+    'Solucions-Socials-Sostenibles-Kronos-Mobile'
+  );
 
   const [currentView, setCurrentView] = useState('home'); // 'home' or 'dashboard'
 
@@ -63,8 +71,9 @@ function App() {
       name: 'SSS KRONOS MOBILE',
       description: 'Solución móvil para conectividad en cualquier lugar.',
       icon: '📱',
-      link: 'LINK_DE_DRIVE_MOBILE_AQUI', // TODO: Replace with actual Drive Link
-      docLink: 'https://docs.google.com/document/d/1VyEojHDf-NtNp4Ufff_hr-TpM_tW7enjEtEMNN7hdHk/edit?usp=sharing'
+      link: mobileRelease?.assets?.[0]?.browser_download_url || '#',
+      docLink: 'https://docs.google.com/document/d/1VyEojHDf-NtNp4Ufff_hr-TpM_tW7enjEtEMNN7hdHk/edit?usp=sharing',
+      isMobile: true
     }
   ]
 
@@ -121,17 +130,30 @@ function App() {
                 <h2>{app.name}</h2>
                 <p>{app.description}</p>
                 <div className="card-actions">
-                  {app.link ? (
-                    <a href={app.link} className="download-btn" style={{ textDecoration: 'none', textAlign: 'center' }} target="_blank" rel="noopener noreferrer">Descargar</a>
+                  {app.link && app.link !== '#' ? (
+                    <a href={app.link} className="download-btn" style={{ textDecoration: 'none', textAlign: 'center' }} target={app.isMobile ? "_self" : "_blank"} rel="noopener noreferrer">
+                      {app.isMobile && mobileLoading ? 'Cargando...' : 'Descargar'}
+                    </a>
                   ) : (
-                    <button className="download-btn" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>No disponible</button>
+                    <button className="download-btn" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+                      {app.isMobile && mobileLoading ? 'Cargando...' : 'No disponible'}
+                    </button>
                   )}
                   {app.docLink ? (
                     <a href={app.docLink} className="doc-btn" style={{ textDecoration: 'none', textAlign: 'center' }} target="_blank" rel="noopener noreferrer">Documentación</a>
                   ) : (
                     <button className="doc-btn">Documentación</button>
                   )}
-                  <button className="history-btn">Notas de Versión</button>
+                  {app.isMobile && (
+                    <button
+                      className="history-btn"
+                      onClick={() => setIsReleaseNotesOpen(true)}
+                      disabled={!mobileRelease}
+                      style={!mobileRelease ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+                    >
+                      Notas de Versión
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -159,6 +181,12 @@ function App() {
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
         onLoginSuccess={(user) => setUser(user)}
+      />
+      <ReleaseNotesModal
+        isOpen={isReleaseNotesOpen}
+        onClose={() => setIsReleaseNotesOpen(false)}
+        releaseNotes={mobileRelease?.body}
+        tagName={mobileRelease?.tag_name}
       />
     </div>
   )
