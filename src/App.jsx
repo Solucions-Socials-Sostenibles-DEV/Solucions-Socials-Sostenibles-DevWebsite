@@ -11,7 +11,7 @@ function App() {
     },
     {
       name: 'SSS KRONOS MOBILE',
-      description: 'Solución móvil para conectividad en cualquier lugar.',
+      description: 'Solución móvil para conectividad móvil.',
       icon: '📱' 
     },
     {
