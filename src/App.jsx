@@ -86,11 +86,6 @@ function App() {
       isMobile: true,
       release: mobileRelease,
       loading: mobileLoading
-    },
-    {
-      name: 'IDONI TIENDA',
-      description: 'Gestión y consulta de elementos relacionados con la tienda',
-      icon: '🍳'
     }
   ]
 
