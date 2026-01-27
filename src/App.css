@@ -1,11 +1,15 @@
 #root {
   width: 100%;
+  height: 100vh;
+  /* Force full viewport height */
   margin: 0 auto;
-  padding: 0.5rem 1rem;
+  padding: 0;
+  /* Remove padding from root to handle it in container */
   text-align: center;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  /* Prevent root scroll */
 }
 
 .container {
@@ -13,7 +17,14 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
+  /* Occupy full root height */
   align-items: center;
+  padding: 1rem 2rem;
+  /* Add padding here instead */
+  box-sizing: border-box;
+  justify-content: space-between;
+  /* Distribute space evenly */
 }
 
 .navbar {
@@ -21,9 +32,12 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
-  padding: 2rem 0 1rem 0;
-  margin-bottom: 0.5rem;
+  max-width: 1400px;
+  /* Increased max-width for better use of space */
+  padding: 0.5rem 0;
+  /* Reduced padding */
+  flex-shrink: 0;
+  /* Prevent navbar from shrinking */
 }
 
 .navbar-brand {
@@ -33,12 +47,13 @@
 }
 
 .navbar-logo {
-  height: 40px;
+  height: 36px;
+  /* Slightly smaller to save space */
   width: auto;
 }
 
 .navbar-brand h1 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-text);
   margin: 0;
@@ -59,19 +74,36 @@
   font-weight: 500;
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s;
+  font-size: 0.9rem;
 }
 
-.navbar-links a:hover {
+.navbar-links a:hover,
+.nav-btn-link:hover {
   border-color: var(--color-primary);
+}
+
+.nav-btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s;
+  font-size: 0.9rem;
 }
 
 .login-btn {
   background-color: transparent;
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
-  padding: 0.5rem 1.5rem;
+  padding: 0.4rem 1.2rem;
   border-radius: 50px;
   font-weight: 600;
+  font-size: 0.9rem;
   transition: all 0.2s;
 }
 
@@ -80,40 +112,62 @@
   color: white;
 }
 
+.header {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+}
+
 .header h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
+  /* Adjusted size */
   color: var(--color-primary);
   margin-bottom: 0.2rem;
   margin-top: 0;
 }
 
 .header p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #666;
   margin: 0;
-  margin-bottom: 1.7rem;
 }
 
 .app-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  display: flex;
+  /* Changed from grid to flex for better centering or grid */
+  flex-direction: row;
+  justify-content: center;
+  gap: 1.5rem;
   flex: 1;
+  /* Allow it to take available space */
   width: 100%;
-  max-width: 1200px;
-  align-content: start;
+  max-width: 1400px;
+  align-items: center;
+  /* Vertically center the cards */
+  overflow-y: auto;
+  /* Allow scroll only inside grid if absolutely necessary, but goal is fit */
+  min-height: 0;
+  /* Important for flex child with overflow */
+  padding: 1rem 0;
 }
 
 .app-card {
   background: white;
   border-radius: 16px;
-  padding: 1.5rem;
+  padding: 2.5rem 2rem;
+  /* Increased vertical padding significantly */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.2rem;
+  /* Increased gap */
+  flex: 1;
+  /* Distribute width evenly */
+  max-width: 350px;
+  /* Prevent too wide cards */
+  height: auto;
+  max-height: 100%;
 }
 
 .app-card:hover {
@@ -122,20 +176,22 @@
 }
 
 .app-icon {
-  font-size: 3rem;
+  font-size: 3.5rem;
+  /* Larger icon */
   margin-bottom: 0.5rem;
 }
 
 .app-card h2 {
   color: var(--color-primary);
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .app-card p {
   color: #666;
   margin: 0;
   flex-grow: 1;
+  font-size: 0.95rem;
 }
 
 
@@ -144,7 +200,7 @@
   display: flex;
   gap: 0.5rem;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -153,10 +209,10 @@
   background-color: transparent;
   color: var(--color-primary);
   border: 1px solid var(--color-primary);
-  padding: 0.5rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   border-radius: 50px;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   flex: 1 1 40%;
   transition: all 0.2s;
   white-space: nowrap;
@@ -171,13 +227,13 @@
   background-color: var(--color-primary);
   color: white;
   border: none;
-  padding: 0.8rem 2rem;
+  padding: 0.6rem 2rem;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin-top: auto;
   flex: 1 1 100%;
-  order: -1; 
+  order: -1;
   transition: background-color 0.2s;
 }
 
@@ -188,19 +244,21 @@
 
 .footer {
   color: #999;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-top: auto;
-  margin-bottom: 2rem;
-  padding-top: 5rem;
+  /* Push to bottom */
+  padding-bottom: 1rem;
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .footer-links {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .footer-links a {
@@ -216,12 +274,14 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   #root {
-    padding: 0; /* Remove root padding to allow full-width heroes */
+    padding: 0;
+    /* Remove root padding to allow full-width heroes */
     overflow-x: hidden;
   }
 
   .container {
-    padding: 0 1.5rem; /* Comfortable side padding */
+    padding: 0 1.5rem;
+    /* Comfortable side padding */
     width: auto;
   }
 
@@ -241,11 +301,13 @@
   }
 
   .navbar-logo {
-    height: 32px; /* Slightly smaller logo */
+    height: 32px;
+    /* Slightly smaller logo */
   }
 
   .navbar-brand h1 {
-    font-size: 0.9rem; /* Finer text */
+    font-size: 0.9rem;
+    /* Finer text */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -257,13 +319,14 @@
     top: 0;
     right: 0;
     height: 100vh;
-    width: 280px; /* Fixed width for better control */
+    width: 280px;
+    /* Fixed width for better control */
     background: white;
     flex-direction: column;
     align-items: flex-start;
     padding: 2rem;
     gap: 1.5rem;
-    box-shadow: -5px 0 30px rgba(0,0,0,0.15);
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
     transform: translateX(100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 3000;
@@ -280,7 +343,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(4px);
     z-index: 2500;
     opacity: 0;
@@ -311,7 +374,7 @@
     width: 28px;
     height: 28px;
   }
-  
+
   .hamburger {
     display: flex;
     align-items: center;
@@ -323,54 +386,67 @@
 
   /* Grid & Cards - CRITICAL FIXES */
   .app-grid {
+    display: grid;
+    /* Restore grid for mobile */
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding-bottom: 2rem;
-    width: 100%; /* Ensure grid doesn't overflow */
+    width: 100%;
+    /* Ensure grid doesn't overflow */
     box-sizing: border-box;
   }
-  
+
   .app-card {
     padding: 1.5rem;
-    width: 100%; /* Fix width */
-    box-sizing: border-box; /* Prevent padding form increasing width */
+    /* Reset to standard padding on mobile */
+    width: 100%;
+    /* Fix width */
+    box-sizing: border-box;
+    /* Prevent padding form increasing width */
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+    /* Reset gap */
   }
-  
+
   /* Buttons Layout */
   .card-actions {
-    display: flex;     
-    flex-direction: column; /* Force vertical stack on mobile */
+    display: flex;
+    flex-direction: column;
+    /* Force vertical stack on mobile */
     gap: 0.8rem;
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   /* Reset flex properties for mobile buttons to ensure they behave */
-  .doc-btn, 
+  .doc-btn,
   .history-btn,
   .download-btn {
-    flex: none; /* Disable flex growing logic from desktop */
-    width: 100%; /* Full width */
+    flex: none;
+    /* Disable flex growing logic from desktop */
+    width: 100%;
+    /* Full width */
     margin: 0;
     box-sizing: border-box;
     font-size: 0.95rem;
-    padding: 0.8rem 1rem; /* Adjust padding to not be huge */
+    padding: 0.8rem 1rem;
+    /* Adjust padding to not be huge */
   }
-  
+
   /* Keep download button primary but standard size */
   .download-btn {
-    order: 0; /* Reset order */
+    order: 0;
+    /* Reset order */
   }
-  
+
   /* Footer */
   .footer {
     padding: 3rem 1.5rem;
     text-align: left;
     align-items: flex-start;
   }
-  
+
   .footer-links {
     flex-wrap: wrap;
     gap: 1.5rem;
@@ -380,7 +456,8 @@
 
 /* Desktop Only */
 @media (min-width: 769px) {
-  .hamburger, 
+
+  .hamburger,
   .mobile-only-header,
   .navbar-overlay {
     display: none !important;
