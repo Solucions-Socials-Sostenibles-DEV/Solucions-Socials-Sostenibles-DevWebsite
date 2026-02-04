@@ -276,7 +276,7 @@ const FichajePage = ({ onBack, userId }) => {
         </header>
 
         {/* Grid Principal */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem', width: '100%' }}>
             
             {/* 1. Estado Actual */}
             <div style={{ ...cardStyle, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
@@ -286,7 +286,7 @@ const FichajePage = ({ onBack, userId }) => {
                 
                 {estadoFichaje?.fichaje?.hora_entrada && !estadoFichaje?.fichaje?.hora_salida ? (
                     <div>
-                        <div style={{ fontSize: '3rem', fontWeight: '800', lineHeight: 1, marginBottom: '0.5rem', color: '#1a1a1a' }}>
+                        <div style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: '800', lineHeight: 1, marginBottom: '0.5rem', color: '#1a1a1a' }}>
                             {formatTimeMadrid(estadoFichaje.fichaje.hora_entrada)}
                         </div>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.8rem', borderRadius: '20px', background: estadoFichaje.pausaActiva ? '#FFF3E0' : '#E8F5E9', color: estadoFichaje.pausaActiva ? '#EF6C00' : '#2E7D32', fontSize: '0.85rem', fontWeight: '600' }}>
@@ -312,14 +312,14 @@ const FichajePage = ({ onBack, userId }) => {
                     {loading && <RefreshCw size={16} className="spin" color="#EE1566" />}
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.8rem' }}>
                     {estadoFichaje?.puedeFicharEntrada && (
                          <button 
                             onClick={() => executeAction(() => fichajeService.ficharEntrada(empleadoId, userId), "Entrada registrada")}
                             disabled={loading}
                             style={actionBtnStyle('#1B5E20', '#E8F5E9')}
                          >
-                            <LogIn size={20} /> <span style={{ fontWeight: '600' }}>ENTRADA</span>
+                            <LogIn size={20} /> <span style={{ fontWeight: '600', fontSize: 'clamp(0.8rem, 2vw, 1rem)' }}>ENTRADA</span>
                          </button>
                     )}
                     
@@ -329,7 +329,7 @@ const FichajePage = ({ onBack, userId }) => {
                             disabled={loading}
                             style={{ ...actionBtnStyle('#0D47A1', '#E3F2FD'), gridColumn: 'span 2' }}
                          >
-                            <Play size={20} /> <span style={{ fontWeight: '600' }}>REANUDAR TRABAJO</span>
+                            <Play size={20} /> <span style={{ fontWeight: '600', fontSize: 'clamp(0.8rem, 2vw, 1rem)' }}>REANUDAR TRABAJO</span>
                          </button>
                     )}
 
@@ -339,7 +339,7 @@ const FichajePage = ({ onBack, userId }) => {
                             disabled={loading}
                             style={actionBtnStyle('#E65100', '#FFF3E0')}
                          >
-                            <Coffee size={20} /> <span style={{ fontWeight: '600' }}>PAUSA</span>
+                            <Coffee size={20} /> <span style={{ fontWeight: '600', fontSize: 'clamp(0.8rem, 2vw, 1rem)' }}>PAUSA</span>
                          </button>
                     )}
                     
@@ -349,7 +349,7 @@ const FichajePage = ({ onBack, userId }) => {
                             disabled={loading}
                             style={actionBtnStyle('#B71C1C', '#FFEBEE')}
                          >
-                            <LogOut size={20} /> <span style={{ fontWeight: '600' }}>SALIDA</span>
+                            <LogOut size={20} /> <span style={{ fontWeight: '600', fontSize: 'clamp(0.8rem, 2vw, 1rem)' }}>SALIDA</span>
                          </button>
                     )}
 
@@ -389,19 +389,18 @@ const FichajePage = ({ onBack, userId }) => {
             </div>
         </div>
 
-        {/* Historial Compacto */}
-        <div style={{ ...cardStyle, padding: '0' }}>
+        <div style={{ ...cardStyle, padding: '0', overflow: 'hidden' }}>
             <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #f0f0f0' }}>
                <h3 style={{ margin: 0, fontSize: '1rem', color: '#444' }}>Historial Reciente</h3>
             </div>
-            <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+            <div style={{ overflowX: 'auto', width: '100%' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem', minWidth: '500px' }}>
                     <thead style={{ background: '#fafafa', color: '#888' }}>
                         <tr>
-                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>FECHA</th>
-                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>HORARIO</th>
-                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>ESTADO</th>
-                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'right', fontWeight: '600', fontSize: '0.8rem' }}>TOTAL</th>
+                            <th style={{ padding: '0.8rem 1rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>FECHA</th>
+                            <th style={{ padding: '0.8rem 1rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>HORARIO</th>
+                            <th style={{ padding: '0.8rem 1rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>ESTADO</th>
+                            <th style={{ padding: '0.8rem 1rem', textAlign: 'right', fontWeight: '600', fontSize: '0.8rem' }}>TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -410,24 +409,25 @@ const FichajePage = ({ onBack, userId }) => {
                          ) : (
                             historial.map((f, i) => (
                                 <tr key={f.id} style={{ borderBottom: i !== historial.length -1 ? '1px solid #f5f5f5' : 'none' }}>
-                                    <td style={{ padding: '0.8rem 1.5rem', fontWeight: '500' }}>{formatDateMadrid(f.fecha)}</td>
-                                    <td style={{ padding: '0.8rem 1.5rem', color: '#666' }}>
+                                    <td style={{ padding: '0.8rem 1rem', fontWeight: '500', whiteSpace: 'nowrap' }}>{formatDateMadrid(f.fecha)}</td>
+                                    <td style={{ padding: '0.8rem 1rem', color: '#666', whiteSpace: 'nowrap' }}>
                                         {formatTimeMadrid(f.hora_entrada)} - {f.hora_salida ? formatTimeMadrid(f.hora_salida) : '...'}
                                     </td>
-                                    <td style={{ padding: '0.8rem 1.5rem' }}>
+                                    <td style={{ padding: '0.8rem 1rem' }}>
                                          <span style={{
                                             padding: '0.2rem 0.6rem',             
                                             borderRadius: '12px',
-                                            fontSize: '0.75rem',
+                                            fontSize: '0.7rem',
                                             fontWeight: '600',
                                             display: 'inline-block',
+                                            whiteSpace: 'nowrap',
                                             background: f.hora_salida ? '#E8F5E9' : '#FFF3E0',
                                             color: f.hora_salida ? '#2E7D32' : '#EF6C00'
                                         }}>
                                             {f.hora_salida ? 'COMPLETADO' : 'PENDIENTE'}
                                         </span>
                                     </td>
-                                    <td style={{ padding: '0.8rem 1.5rem', textAlign: 'right', fontWeight: '600', color: '#333' }}>
+                                    <td style={{ padding: '0.8rem 1rem', textAlign: 'right', fontWeight: '600', color: '#333' }}>
                                         {f.horas_trabajadas ? `${Number(f.horas_trabajadas).toFixed(2)}h` : '-'}
                                     </td>
                                 </tr>

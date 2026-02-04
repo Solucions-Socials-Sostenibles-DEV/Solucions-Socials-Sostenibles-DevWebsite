@@ -1,15 +1,12 @@
 #root {
   width: 100%;
   height: 100vh;
-  /* Force full viewport height */
   margin: 0 auto;
   padding: 0;
-  /* Remove padding from root to handle it in container */
   text-align: center;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /* Prevent root scroll */
 }
 
 .container {
@@ -18,13 +15,10 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  /* Occupy full root height */
   align-items: center;
   padding: 1rem 2rem;
-  /* Add padding here instead */
   box-sizing: border-box;
   justify-content: space-between;
-  /* Distribute space evenly */
 }
 
 .navbar {
@@ -33,11 +27,10 @@
   align-items: center;
   width: 100%;
   max-width: 1400px;
-  /* Increased max-width for better use of space */
-  padding: 0.5rem 0;
-  /* Reduced padding */
+  padding: 0.8rem 0;
   flex-shrink: 0;
-  /* Prevent navbar from shrinking */
+  position: relative;
+  z-index: 100;
 }
 
 .navbar-brand {
@@ -48,7 +41,6 @@
 
 .navbar-logo {
   height: 36px;
-  /* Slightly smaller to save space */
   width: auto;
 }
 
@@ -59,6 +51,7 @@
   margin: 0;
 }
 
+/* Desktop Navbar Links */
 .navbar-links {
   display: flex;
   align-items: center;
@@ -68,13 +61,19 @@
   padding: 0;
 }
 
-.navbar-links a {
+.navbar-links a,
+.nav-btn-link {
   color: var(--color-text);
   text-decoration: none;
   font-weight: 500;
   border-bottom: 2px solid transparent;
   transition: border-color 0.2s;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
 }
 
 .navbar-links a:hover,
@@ -82,29 +81,16 @@
   border-color: var(--color-primary);
 }
 
-.nav-btn-link {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  color: var(--color-text);
-  text-decoration: none;
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-  transition: border-color 0.2s;
-  font-size: 0.9rem;
-}
-
 .login-btn {
   background-color: transparent;
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
-  padding: 0.4rem 1.2rem;
+  padding: 0.4rem 1.4rem;
   border-radius: 50px;
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.2s;
+  cursor: pointer;
 }
 
 .login-btn:hover {
@@ -118,8 +104,7 @@
 }
 
 .header h2 {
-  font-size: 2rem;
-  /* Adjusted size */
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   color: var(--color-primary);
   margin-bottom: 0.2rem;
   margin-top: 0;
@@ -131,43 +116,37 @@
   margin: 0;
 }
 
+/* App Grid - Main Layout */
 .app-grid {
   display: flex;
-  /* Changed from grid to flex for better centering or grid */
   flex-direction: row;
   justify-content: center;
-  gap: 1.5rem;
+  flex-wrap: wrap; /* Key for responsiveness */
+  gap: 2rem;
   flex: 1;
-  /* Allow it to take available space */
   width: 100%;
   max-width: 1400px;
   align-items: center;
-  /* Vertically center the cards */
+  align-content: center;
   overflow-y: auto;
-  /* Allow scroll only inside grid if absolutely necessary, but goal is fit */
   min-height: 0;
-  /* Important for flex child with overflow */
   padding: 1rem 0;
 }
 
 .app-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 2.5rem 2rem;
-  /* Increased vertical padding significantly */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.2rem;
-  /* Increased gap */
   flex: 1;
-  /* Distribute width evenly */
-  max-width: 350px;
-  /* Prevent too wide cards */
+  min-width: 300px;
+  max-width: 400px; /* Control max width */
   height: auto;
-  max-height: 100%;
 }
 
 .app-card:hover {
@@ -177,30 +156,28 @@
 
 .app-icon {
   font-size: 3.5rem;
-  /* Larger icon */
   margin-bottom: 0.5rem;
 }
 
 .app-card h2 {
   color: var(--color-primary);
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 }
 
 .app-card p {
   color: #666;
   margin: 0;
   flex-grow: 1;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  line-height: 1.5;
 }
-
-
 
 .card-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.8rem;
   width: 100%;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   flex-wrap: wrap;
 }
 
@@ -209,13 +186,14 @@
   background-color: transparent;
   color: var(--color-primary);
   border: 1px solid var(--color-primary);
-  padding: 0.4rem 0.5rem;
+  padding: 0.6rem 1rem;
   border-radius: 50px;
-  font-weight: 500;
-  font-size: 0.8rem;
-  flex: 1 1 40%;
+  font-weight: 600;
+  font-size: 0.85rem;
+  flex: 1;
   transition: all 0.2s;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .doc-btn:hover,
@@ -227,17 +205,24 @@
   background-color: var(--color-primary);
   color: white;
   border: none;
-  padding: 0.6rem 2rem;
+  padding: 0.8rem 2rem;
   border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-top: auto;
-  flex: 1 1 100%;
+  font-weight: 700;
+  font-size: 1rem;
+  width: 100%; /* Make primary button full width usually looks better */
+  flex-basis: 100%;
   order: -1;
   transition: background-color 0.2s;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.download-btn:hover {
+.download-btn:disabled {
+    filter: grayscale(1);
+    opacity: 0.7;
+}
+
+.download-btn:hover:not(:disabled) {
   filter: brightness(1.1);
   box-shadow: 0 4px 15px rgba(238, 21, 102, 0.3);
 }
@@ -246,95 +231,75 @@
   color: #999;
   font-size: 0.8rem;
   margin-top: auto;
-  /* Push to bottom */
-  padding-bottom: 1rem;
-  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+  padding-top: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
   flex-shrink: 0;
 }
 
 .footer-links {
   display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.footer-links a {
-  color: #666;
-  text-decoration: none;
-  transition: color 0.2s;
+.footer-links a,
+.footer-links button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #888;
+    text-decoration: none;
+    padding: 0;
 }
 
-.footer-links a:hover {
+.footer-links a:hover,
+.footer-links button:hover {
   color: var(--color-primary);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+/* ---------------- MOBILE RESPONSIVE ---------------- */
+@media (max-width: 900px) { /* Increased breakpoint for tablets */
   #root {
-    padding: 0;
-    /* Remove root padding to allow full-width heroes */
     overflow-x: hidden;
   }
 
   .container {
-    padding: 0 1.5rem;
-    /* Comfortable side padding */
-    width: auto;
-  }
-
-  /* Navbar */
-  .navbar {
-    padding: 1rem 0;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    z-index: 2000;
-  }
-
-  .navbar-brand {
-    justify-content: space-between;
-    width: 100%;
-    gap: 1rem;
-  }
-
-  .navbar-logo {
-    height: 32px;
-    /* Slightly smaller logo */
-  }
-
-  .navbar-brand h1 {
-    font-size: 0.9rem;
-    /* Finer text */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Slide-in Menu (Drawer) */
-  .navbar-links {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: 280px;
-    /* Fixed width for better control */
-    background: white;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 2rem;
-    gap: 1.5rem;
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 3000;
+    padding: 1rem 1.2rem;
     display: flex;
+    flex-direction: column;
   }
 
-  .navbar-links.active {
-    transform: translateX(0);
+  /* Navbar Mobile */
+  .navbar {
+    padding: 0.8rem 0;
+    justify-content: space-between;
+  }
+  
+  .navbar-logo {
+      height: 32px;
+  }
+  
+  .navbar-brand h1 {
+      font-size: 1rem;
+  }
+
+  /* Hamburger & Menu */
+  .hamburger {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    z-index: 3001; /* Above overlay */
   }
 
   .navbar-overlay {
@@ -343,120 +308,114 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
-    z-index: 2500;
+    z-index: 2900;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
   }
-
+  
   .navbar-overlay.open {
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Mobile Menu Header */
-  .mobile-only-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-  }
-
-  /* SVG Icons */
-  .hamburger svg,
-  .close-btn svg {
-    display: block;
-    width: 28px;
-    height: 28px;
-  }
-
-  .hamburger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-  }
-
-  /* ... */
-
-  /* Grid & Cards - CRITICAL FIXES */
-  .app-grid {
-    display: grid;
-    /* Restore grid for mobile */
-    grid-template-columns: 1fr;
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 80%; /* Wider drawer */
+    max-width: 320px;
+    background: white;
+    flex-direction: column;
+    align-items: stretch; /* Stretch items */
+    padding: 2rem;
+    padding-top: 5rem; /* Space for close button */
     gap: 1.5rem;
-    padding-bottom: 2rem;
-    width: 100%;
-    /* Ensure grid doesn't overflow */
-    box-sizing: border-box;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3000;
+  }
+
+  .navbar-links.active {
+    transform: translateX(0);
+  }
+
+  .mobile-only-header {
+      display: flex !important;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: auto;
+      border: none;
+      padding: 0;
+      margin: 0;
+  }
+
+  .menu-title {
+      display: none; /* Hide 'MENU' text, just use X */
+  }
+
+  .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      display: block !important;
+  }
+
+  .navbar-links li {
+      width: 100%;
+      text-align: left;
+      border-bottom: 1px solid #f5f5f5;
+      padding-bottom: 1rem;
+  }
+  
+  .navbar-links li:last-child {
+      border: none;
+      margin-top: auto; /* Push login to bottom if desired */
+  }
+
+  .navbar-links a,
+  .nav-btn-link {
+      font-size: 1.1rem;
+      display: block;
+      width: 100%;
+  }
+
+  /* App Grid Mobile */
+  .app-grid {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      height: auto;
+      overflow-y: visible; /* Scroll happens on container */
+      padding: 1rem 0 3rem 0;
   }
 
   .app-card {
-    padding: 1.5rem;
-    /* Reset to standard padding on mobile */
-    width: 100%;
-    /* Fix width */
-    box-sizing: border-box;
-    /* Prevent padding form increasing width */
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    /* Reset gap */
+      width: 100%;
+      max-width: 100%;
+      padding: 2rem 1.5rem;
+      min-width: 0;
   }
 
-  /* Buttons Layout */
-  .card-actions {
-    display: flex;
-    flex-direction: column;
-    /* Force vertical stack on mobile */
-    gap: 0.8rem;
-    width: 100%;
-    box-sizing: border-box;
+  .header h2 {
+      font-size: 1.8rem;
   }
-
-  /* Reset flex properties for mobile buttons to ensure they behave */
-  .doc-btn,
-  .history-btn,
-  .download-btn {
-    flex: none;
-    /* Disable flex growing logic from desktop */
-    width: 100%;
-    /* Full width */
-    margin: 0;
-    box-sizing: border-box;
-    font-size: 0.95rem;
-    padding: 0.8rem 1rem;
-    /* Adjust padding to not be huge */
-  }
-
-  /* Keep download button primary but standard size */
-  .download-btn {
-    order: 0;
-    /* Reset order */
-  }
-
-  /* Footer */
+  
   .footer {
-    padding: 3rem 1.5rem;
-    text-align: left;
-    align-items: flex-start;
-  }
-
-  .footer-links {
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: flex-start;
+      text-align: center;
+      padding-bottom: 2rem;
   }
 }
 
-/* Desktop Only */
-@media (min-width: 769px) {
-
+/* Desktop Utility to hide mobile stuff */
+@media (min-width: 901px) {
   .hamburger,
   .mobile-only-header,
   .navbar-overlay {
