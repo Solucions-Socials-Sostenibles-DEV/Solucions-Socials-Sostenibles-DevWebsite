@@ -34,19 +34,11 @@ function LoginModal({ isOpen, onClose, onLoginSuccess }) {
 
                 if (profileError) {
                     console.error('Error fetching profile:', profileError);
-                    // If profile not found but auth succeeded, decided to deny access to be safe
-                    // OR allow if you want basic users. But requirement is 'admin' only.
                     throw new Error('No se pudo verificar el perfil del usuario.');
                 }
 
-                if (profileData.role !== 'admin') {
-                    // Not an admin, sign out immediately
-                    await supabase.auth.signOut();
-                    throw new Error('Acceso denegado. Solo administradores pueden entrar.');
-                }
-
-                // 3. Success
-                onLoginSuccess(authData.user);
+                // 3. Success - pass both user and role to parent
+                onLoginSuccess(authData.user, profileData.role);
                 onClose();
                 setEmail('');
                 setPassword('');
@@ -70,7 +62,7 @@ function LoginModal({ isOpen, onClose, onLoginSuccess }) {
                 </button>
 
                 <h2>Iniciar Sesión</h2>
-                <p className="contact-subtitle">Acceso restringido a administradores.</p>
+                <p className="contact-subtitle">Accede a tu cuenta para comenzar.</p>
 
                 {error && (
                     <div style={{ backgroundColor: '#ffebee', color: '#c62828', padding: '0.8rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem' }}>

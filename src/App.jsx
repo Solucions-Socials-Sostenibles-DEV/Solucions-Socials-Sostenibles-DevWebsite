@@ -6,6 +6,7 @@ import CookiesModal from './CookiesModal';
 import PrivacyModal from './PrivacyModal';
 import LoginModal from './LoginModal';
 import AdminDashboard from './AdminDashboard';
+import Fichaje from './Fichaje';
 import { supabase } from './supabaseClient';
 import ReleaseNotesModal from './ReleaseNotesModal';
 import { useGitHubRelease } from './hooks/useGitHubRelease';
@@ -18,6 +19,7 @@ function App() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false);
   const [selectedRelease, setSelectedRelease] = useState(null);
 
@@ -31,7 +33,7 @@ function App() {
     'Solucions-Socials-Sostenibles-Kronos'
   );
 
-  const [currentView, setCurrentView] = useState('home'); // 'home' or 'dashboard'
+  const [currentView, setCurrentView] = useState('home'); // 'home', 'dashboard', or 'fichaje'
 
   useEffect(() => {
     // Check active session on load
@@ -39,8 +41,9 @@ function App() {
       if (session) {
         supabase.from('user_profiles').select('role').eq('id', session.user.id).single()
           .then(({ data }) => {
-            if (data && data.role === 'admin') {
+            if (data) {
               setUser(session.user);
+              setUserRole(data.role);
             } else {
               supabase.auth.signOut();
             }
@@ -51,6 +54,7 @@ function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
         setUser(null);
+        setUserRole(null);
       }
     });
 
@@ -64,6 +68,7 @@ function App() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setUserRole(null);
     setCurrentView('home');
   };
   const apps = [
@@ -116,7 +121,10 @@ function App() {
           <li>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <button className="nav-btn-link" onClick={() => { setCurrentView('dashboard'); setIsMenuOpen(false); }}>PANEL</button>
+                {userRole === 'admin' && (
+                  <button className="nav-btn-link" onClick={() => { setCurrentView('dashboard'); setIsMenuOpen(false); }}>PANEL</button>
+                )}
+                <button className="nav-btn-link" onClick={() => { setCurrentView('fichaje'); setIsMenuOpen(false); }}>FICHAJE</button>
                 <button className="login-btn" onClick={handleLogout}>CERRAR</button>
               </div>
             ) : (
@@ -126,8 +134,10 @@ function App() {
         </ul>
       </nav>
 
-      {currentView === 'dashboard' && user ? (
+      {currentView === 'dashboard' && user && userRole === 'admin' ? (
         <AdminDashboard onBack={() => setCurrentView('home')} />
+      ) : currentView === 'fichaje' && user ? (
+        <Fichaje onBack={() => setCurrentView('home')} userId={user.id} />
       ) : (
         <>
           <header className="header" id="inicio">
@@ -193,7 +203,10 @@ function App() {
       <LoginModal
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
-        onLoginSuccess={(user) => setUser(user)}
+        onLoginSuccess={(user, role) => {
+          setUser(user);
+          setUserRole(role);
+        }}
       />
       <ReleaseNotesModal
         isOpen={isReleaseNotesOpen}
