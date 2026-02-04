@@ -167,11 +167,11 @@ const FichajePage = ({ onBack, userId }) => {
   // Render Login View
   if (!empleadoId) {
       return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#f5f5f7' }}>
+        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                style={{ background: 'white', padding: '2.5rem', borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', width: '100%', maxWidth: '360px', textAlign: 'center' }}
+                style={{ background: 'white', padding: '2.5rem', borderRadius: '24px', border: '1px solid rgba(0,0,0,0.03)', width: '100%', maxWidth: '360px', textAlign: 'center' }}
             >
                 <div style={{ background: '#FFF0F5', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                     <Clock size={28} color="#EE1566" />
@@ -246,7 +246,7 @@ const FichajePage = ({ onBack, userId }) => {
   }
 
   // Render Dashboard
-  const cardStyle = { background: 'white', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.03)' };
+  const cardStyle = { background: 'white', borderRadius: '20px', padding: '1.5rem', border: '1px solid rgba(0,0,0,0.03)' };
   const actionBtnStyle = (color, bg) => ({
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
       padding: '1.2rem', borderRadius: '16px', border: 'none', cursor: 'pointer',
@@ -254,11 +254,11 @@ const FichajePage = ({ onBack, userId }) => {
   });
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8f9fa', padding: '2rem 1rem' }}>
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         
         {/* Header Compacto */}
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', background: 'white', padding: '1rem 1.5rem', borderRadius: '16px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', background: 'white', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(0,0,0,0.03)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div style={{ width: '40px', height: '40px', background: '#EE1566', color: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
                     {empleadoInfo?.nombreCompleto?.charAt(0)}
