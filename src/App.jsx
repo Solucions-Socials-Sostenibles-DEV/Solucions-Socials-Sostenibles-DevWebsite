@@ -6,7 +6,7 @@ import CookiesModal from './CookiesModal';
 import PrivacyModal from './PrivacyModal';
 import LoginModal from './LoginModal';
 import AdminDashboard from './AdminDashboard';
-import Fichaje from './Fichaje';
+import FichajePage from './FichajePage';
 import { supabase } from './supabaseClient';
 import ReleaseNotesModal from './ReleaseNotesModal';
 import { useGitHubRelease } from './hooks/useGitHubRelease';
@@ -137,7 +137,7 @@ function App() {
       {currentView === 'dashboard' && user && userRole === 'admin' ? (
         <AdminDashboard onBack={() => setCurrentView('home')} />
       ) : currentView === 'fichaje' && user ? (
-        <Fichaje onBack={() => setCurrentView('home')} userId={user.id} />
+        <FichajePage onBack={() => setCurrentView('home')} userId={user.id} />
       ) : (
         <>
           <header className="header" id="inicio">
