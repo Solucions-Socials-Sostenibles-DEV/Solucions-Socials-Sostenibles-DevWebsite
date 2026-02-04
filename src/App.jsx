@@ -116,7 +116,7 @@ function App() {
               </svg>
             </button>
           </li>
-          <li><a href="#inicio" onClick={() => setIsMenuOpen(false)}>INICIO</a></li>
+          <li><a href="#inicio" onClick={(e) => { e.preventDefault(); setCurrentView('home'); setIsMenuOpen(false); }}>INICIO</a></li>
           <li><button className="nav-btn-link" onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}>CONTACTO</button></li>
           <li>
             {user ? (
