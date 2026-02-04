@@ -254,7 +254,7 @@ const FichajePage = ({ onBack, userId }) => {
   });
 
   return (
-    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ width: '100%', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem' }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         
         {/* Header Compacto */}
