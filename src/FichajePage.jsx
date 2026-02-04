@@ -353,6 +353,23 @@ const FichajePage = ({ onBack, userId }) => {
                          </button>
                     )}
 
+                    {/* Mensaje cuando no hay acciones disponibles */}
+                    {estadoFichaje && !estadoFichaje.puedeFicharEntrada && !estadoFichaje.puedeFicharSalida && !estadoFichaje.puedeIniciarPausa && !estadoFichaje.puedeFinalizarPausa && !loading && (
+                        <div style={{ 
+                            gridColumn: 'span 2', 
+                            textAlign: 'center', 
+                            padding: '1.5rem', 
+                            background: '#F5F5F5', 
+                            borderRadius: '12px',
+                            color: '#666',
+                            fontSize: '0.9rem'
+                        }}>
+                            <CheckCircle size={24} style={{ marginBottom: '0.5rem', color: '#43A047' }} />
+                            <div style={{ fontWeight: '600', marginBottom: '0.3rem' }}>Fichaje completado</div>
+                            <div style={{ fontSize: '0.85rem' }}>Ya has registrado tu jornada para hoy</div>
+                        </div>
+                    )}
+
                     {!estadoFichaje && loading && <div style={{ gridColumn: 'span 2', textAlign: 'center', padding: '1rem', color: '#999', fontSize: '0.9rem' }}>Cargando disponibilidad...</div>}
                 </div>
 
