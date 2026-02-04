@@ -118,19 +118,17 @@ function App() {
           </li>
           <li><a href="#inicio" onClick={(e) => { e.preventDefault(); setCurrentView('home'); setIsMenuOpen(false); }}>INICIO</a></li>
           <li><button className="nav-btn-link" onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}>CONTACTO</button></li>
-          <li>
-            {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                {userRole === 'admin' && (
-                  <button className="nav-btn-link" onClick={() => { setCurrentView('dashboard'); setIsMenuOpen(false); }}>PANEL</button>
-                )}
-                <button className="nav-btn-link" onClick={() => { setCurrentView('fichaje'); setIsMenuOpen(false); }}>FICHAJE</button>
-                <button className="login-btn" onClick={handleLogout}>CERRAR</button>
-              </div>
-            ) : (
-              <button className="login-btn" onClick={() => setIsLoginOpen(true)}>INICIAR SESION</button>
-            )}
-          </li>
+          {user ? (
+            <>
+              {userRole === 'admin' && (
+                <li><button className="nav-btn-link" onClick={() => { setCurrentView('dashboard'); setIsMenuOpen(false); }}>PANEL</button></li>
+              )}
+              <li><button className="nav-btn-link" onClick={() => { setCurrentView('fichaje'); setIsMenuOpen(false); }}>FICHAJE</button></li>
+              <li><button className="login-btn" onClick={handleLogout}>CERRAR SESIÓN</button></li>
+            </>
+          ) : (
+            <li><button className="login-btn" onClick={() => setIsLoginOpen(true)}>INICIAR SESIÓN</button></li>
+          )}
         </ul>
       </nav>
 
