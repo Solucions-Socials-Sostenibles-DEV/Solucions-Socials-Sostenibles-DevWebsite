@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, LogIn, LogOut, Coffee, Pause, Play, AlertCircle, CheckCircle, User, Calendar } from "lucide-react";
+import { Clock, LogIn, LogOut, Coffee, Pause, Play, AlertCircle, CheckCircle, User, Calendar, RefreshCw, BarChart } from "lucide-react";
 import fichajeService from "./services/fichajeService";
 import fichajeSupabaseService from "./services/fichajeSupabaseService";
 import fichajeCodigosService from "./services/fichajeCodigosService";
 import { formatTimeMadrid, formatDateMadrid } from "./utils/timeUtils";
-import { supabase } from './supabaseClient'; // Direct import since AuthContext might not exist or be standard
+import { supabase } from './supabaseClient';
 
-const FichajePage = ({ onBack, userId }) => { // Receiving userId props from App
+const FichajePage = ({ onBack, userId }) => {
   // Estados principales
   const [empleadoId, setEmpleadoId] = useState(null);
   const [empleadoInfo, setEmpleadoInfo] = useState(null);
@@ -46,7 +46,7 @@ const FichajePage = ({ onBack, userId }) => { // Receiving userId props from App
           codigo: resultado.data.codigo,
         });
         setSuccess("Código válido");
-        setTimeout(() => setSuccess(""), 2000);
+        setTimeout(() => setSuccess(""), 1500);
       } else {
         setError(resultado.error || "Código no válido");
         setEmpleadoId(null);
@@ -124,99 +124,38 @@ const FichajePage = ({ onBack, userId }) => { // Receiving userId props from App
       loadEstadoFichaje();
       loadHistorial();
 
-      // Recargar cada 30 segundos
+      // Recargar cada 60 segundos para evitar polling excesivo
       const interval = setInterval(() => {
         loadEstadoFichaje();
-      }, 30000);
+      }, 60000);
 
       return () => clearInterval(interval);
     }
   }, [empleadoId]);
 
-  // Handlers de acciones
-  const handleFicharEntrada = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const resultado = await fichajeService.ficharEntrada(
-        empleadoId,
-        userId,
-      );
-
-      if (resultado.success) {
-        setSuccess("Entrada registrada correctamente");
-        setTimeout(() => setSuccess(""), 3000);
-        await loadEstadoFichaje();
-        await loadHistorial();
-      } else {
-        setError(resultado.error);
+  // Handlers de acciones - Simplificados
+  const executeAction = async (actionFn, successMsg) => {
+      setLoading(true);
+      setError("");
+      try {
+          const resultado = await actionFn();
+          if (resultado.success) {
+              setSuccess(successMsg);
+              setTimeout(() => setSuccess(""), 3000);
+              await loadEstadoFichaje();
+              if(successMsg.includes("Entrada") || successMsg.includes("Salida") || successMsg.includes("finalizada")) {
+                  await loadHistorial();
+              }
+          } else {
+              setError(resultado.error);
+          }
+      } catch (err) {
+          setError("Error en la operación");
+      } finally {
+          setLoading(false);
       }
-    } catch (err) {
-      setError("Error al registrar la entrada");
-    } finally {
-      setLoading(false);
-    }
   };
 
-  const handleFicharSalida = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const resultado = await fichajeService.ficharSalida(empleadoId, userId);
-      if (resultado.success) {
-        setSuccess("Salida registrada correctamente");
-        setTimeout(() => setSuccess(""), 3000);
-        await loadEstadoFichaje();
-        await loadHistorial();
-      } else {
-        setError(resultado.error);
-      }
-    } catch (err) {
-      setError("Error al registrar la salida");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleIniciarPausa = async (tipo = "descanso") => {
-    setLoading(true);
-    setError("");
-    try {
-      const resultado = await fichajeService.iniciarPausa(empleadoId, tipo);
-      if (resultado.success) {
-        setSuccess(resultado.message);
-        setTimeout(() => setSuccess(""), 3000);
-        await loadEstadoFichaje();
-      } else {
-        setError(resultado.error);
-      }
-    } catch (err) {
-      setError("Error al iniciar la pausa");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFinalizarPausa = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const resultado = await fichajeService.finalizarPausa(empleadoId);
-      if (resultado.success) {
-        setSuccess(resultado.message);
-        setTimeout(() => setSuccess(""), 3000);
-        await loadEstadoFichaje();
-        await loadHistorial();
-      } else {
-        setError(resultado.error);
-      }
-    } catch (err) {
-      setError("Error al finalizar la pausa");
-    } finally {
-      setLoading(false);
-    }
-  };
-  
   const handleLogout = () => {
       setEmpleadoId(null);
       setEmpleadoInfo(null);
@@ -228,72 +167,78 @@ const FichajePage = ({ onBack, userId }) => { // Receiving userId props from App
   // Render Login View
   if (!empleadoId) {
       return (
-        <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto', paddingTop: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: '700', margin: 0 }}>Fichaje Empleados</h1>
-                <button className="submit-btn" onClick={onBack} style={{ width: 'auto', padding: '0.8rem 1.5rem', backgroundColor: '#333', marginTop: 0 }}>
-                    Volver
-                </button>
-            </div>
-
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#f5f5f7' }}>
             <motion.div 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="contact-modal" 
-                style={{ position: 'relative', width: '100%', maxWidth: '400px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
-                onClick={(e) => e.stopPropagation()}
+                style={{ background: 'white', padding: '2.5rem', borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', width: '100%', maxWidth: '360px', textAlign: 'center' }}
             >
-                <div style={{ textAlign: 'center' }}>
-                    <div style={{ background: 'rgba(238, 21, 102, 0.1)', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-                        <Clock size={32} color="#EE1566" />
-                    </div>
-                    <h2>Identificación</h2>
-                    <p style={{ color: '#666' }}>Introduce tu código personal para acceder</p>
+                <div style={{ background: '#FFF0F5', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                    <Clock size={28} color="#EE1566" />
                 </div>
+                
+                <h2 style={{ fontSize: '1.5rem', fontWeight: '700', margin: '0 0 0.5rem', color: '#1a1a1a' }}>Fichaje</h2>
+                <p style={{ color: '#888', fontSize: '0.95rem', margin: '0 0 2rem' }}>Identifícate con tu código</p>
 
                 <form onSubmit={validarCodigo}>
-                    <div className="form-group">
-                        <label>Código de Empleado</label>
-                        <input
-                            type="password"
-                            value={codigoFichaje}
-                            onChange={(e) => setCodigoFichaje(e.target.value)}
-                            placeholder="Introduce tu código..."
-                            style={{ fontSize: '1.2rem',  textAlign: 'center', letterSpacing: '4px' }}
-                            autoFocus
-                        />
-                    </div>
+                    <input
+                        type="password"
+                        value={codigoFichaje}
+                        onChange={(e) => setCodigoFichaje(e.target.value)}
+                        placeholder="····"
+                        style={{ 
+                            width: '100%', 
+                            padding: '0.8rem', 
+                            fontSize: '1.5rem', 
+                            textAlign: 'center', 
+                            letterSpacing: '8px',
+                            border: '1px solid #eee',
+                            borderRadius: '12px',
+                            marginBottom: '1.5rem',
+                            outline: 'none',
+                            background: '#fafafa',
+                            transition: 'all 0.2s'
+                        }}
+                        onFocus={(e) => e.target.style.background = 'white'}
+                        onBlur={(e) => e.target.style.background = '#fafafa'}
+                        autoFocus
+                    />
 
-                    {error && (
-                        <motion.div 
-                            initial={{ opacity: 0, height: 0 }} 
-                            animate={{ opacity: 1, height: 'auto' }}
-                            style={{ color: '#c62828', background: '#ffebee', padding: '0.8rem', borderRadius: '8px', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                        >
-                            <AlertCircle size={16} />
-                            {error}
-                        </motion.div>
-                    )}
-
-                     {success && (
-                        <motion.div 
-                            initial={{ opacity: 0, height: 0 }} 
-                            animate={{ opacity: 1, height: 'auto' }}
-                            style={{ color: '#2e7d32', background: '#e8f5e9', padding: '0.8rem', borderRadius: '8px', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                        >
-                            <CheckCircle size={16} />
-                            {success}
-                        </motion.div>
-                    )}
+                    <AnimatePresence>
+                        {error && (
+                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ color: '#E53935', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                <AlertCircle size={14} /> {error}
+                            </motion.div>
+                        )}
+                        {success && (
+                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ color: '#43A047', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                <CheckCircle size={14} /> {success}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     <button 
                         type="submit" 
-                        className="submit-btn" 
                         disabled={validandoCodigo || !codigoFichaje}
-                        style={{ marginTop: '1rem' }}
+                        style={{ 
+                            width: '100%', 
+                            padding: '1rem', 
+                            background: validandoCodigo ? '#ccc' : '#EE1566', 
+                            color: 'white', 
+                            border: 'none', 
+                            borderRadius: '12px', 
+                            fontWeight: '600',
+                            fontSize: '1rem',
+                            cursor: validandoCodigo ? 'not-allowed' : 'pointer',
+                            transition: 'background 0.2s'
+                        }}
                     >
                         {validandoCodigo ? 'Verificando...' : 'Acceder'}
                     </button>
+
+                     <button type="button" onClick={onBack} style={{ marginTop: '1rem', background: 'transparent', border: 'none', color: '#999', fontSize: '0.9rem', cursor: 'pointer' }}>
+                        Volver al inicio
+                     </button>
                 </form>
             </motion.div>
         </div>
@@ -301,228 +246,204 @@ const FichajePage = ({ onBack, userId }) => { // Receiving userId props from App
   }
 
   // Render Dashboard
-  return (
-    <div style={{ padding: "24px", maxWidth: "1200px", margin: "0 auto", paddingTop: '100px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ background: '#EE1566', color: 'white', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
-                {empleadoInfo?.nombreCompleto?.charAt(0) || 'E'}
-            </div>
-            <div>
-                <h1 style={{ fontSize: '1.5rem', fontWeight: '700', margin: 0 }}>Hola, {empleadoInfo?.nombreCompleto}</h1>
-                <p style={{ margin: 0, color: '#666', fontSize: '0.9rem' }}>Código: {empleadoInfo?.codigo}</p>
-            </div>
-        </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-            <button className="submit-btn" onClick={handleLogout} style={{ width: 'auto', padding: '0.6rem 1.2rem', backgroundColor: '#666', marginTop: 0 }}>
-                Cerrar Sesión
-            </button>
-            <button className="submit-btn" onClick={onBack} style={{ width: 'auto', padding: '0.6rem 1.2rem', backgroundColor: '#333', marginTop: 0 }}>
-                Volver
-            </button>
-        </div>
-      </div>
+  const cardStyle = { background: 'white', borderRadius: '20px', padding: '1.5rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.03)' };
+  const actionBtnStyle = (color, bg) => ({
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+      padding: '1.2rem', borderRadius: '16px', border: 'none', cursor: 'pointer',
+      background: bg, color: color, transition: 'transform 0.1s', width: '100%', height: '100%'
+  });
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
-          
-          {/* Status Card */}
-          <div className="feature-card" style={{ cursor: 'default', background: 'white' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Clock size={20} color="#EE1566" />
-                    Estado Actual
-                </h3>
-                <span style={{ 
-                    padding: '0.4rem 0.8rem', 
-                    borderRadius: '20px', 
-                    fontSize: '0.8rem', 
-                    fontWeight: 'bold',
-                    background: estadoFichaje?.pausaActiva ? '#FFF3E0' : estadoFichaje?.tieneFichaje && !estadoFichaje?.fichaje?.hora_salida ? '#E8F5E9' : '#ECEFF1',
-                    color: estadoFichaje?.pausaActiva ? '#F57C00' : estadoFichaje?.tieneFichaje && !estadoFichaje?.fichaje?.hora_salida ? '#2E7D32' : '#546E7A'
-                }}>
-                    {estadoFichaje?.pausaActiva ? '⏸ EN PAUSA' : estadoFichaje?.tieneFichaje && !estadoFichaje?.fichaje?.hora_salida ? '🟢 TRABAJANDO' : '⚪️ FUERA'}
-                </span>
+  return (
+    <div style={{ minHeight: '100vh', background: '#f8f9fa', padding: '2rem 1rem' }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        
+        {/* Header Compacto */}
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', background: 'white', padding: '1rem 1.5rem', borderRadius: '16px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div style={{ width: '40px', height: '40px', background: '#EE1566', color: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                    {empleadoInfo?.nombreCompleto?.charAt(0)}
+                </div>
+                <div>
+                   <h2 style={{ fontSize: '1.1rem', margin: 0, fontWeight: '700' }}>{empleadoInfo?.nombreCompleto}</h2>
+                   <span style={{ fontSize: '0.8rem', color: '#888' }}>ID: {empleadoInfo?.codigo}</span>
+                </div>
             </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button onClick={handleLogout} style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #eee', background: 'transparent', color: '#666', fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <LogOut size={16} /> Salir
+                </button>
+            </div>
+        </header>
+
+        {/* Grid Principal */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
             
-            <div style={{ textAlign: 'center', padding: '1rem 0' }}>
+            {/* 1. Estado Actual */}
+            <div style={{ ...cardStyle, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ marginBottom: '0.5rem', color: '#888', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <Clock size={16} /> ESTADO ACTUAL
+                </div>
+                
                 {estadoFichaje?.fichaje?.hora_entrada && !estadoFichaje?.fichaje?.hora_salida ? (
-                    <>
-                         <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.5rem' }}>Entrada registrada a las</p>
-                         <p style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#333', margin: 0 }}>
-                             {formatTimeMadrid(estadoFichaje.fichaje.hora_entrada)}
-                         </p>
-                         {estadoFichaje.pausaActiva && (
-                             <div style={{ marginTop: '1rem', padding: '0.8rem', background: '#FFF3E0', borderRadius: '8px' }}>
-                                 <p style={{ margin: 0, color: '#EF6C00', fontSize: '0.9rem' }}>
-                                     Pausa iniciada: {formatTimeMadrid(estadoFichaje.pausaActiva.inicio)}
-                                 </p>
-                                 <p style={{ margin: 0, fontWeight: 'bold', color: '#EF6C00' }}>
-                                     {estadoFichaje.pausaActiva.tipo?.toUpperCase()}
-                                 </p>
-                             </div>
-                         )}
-                    </>
+                    <div>
+                        <div style={{ fontSize: '3rem', fontWeight: '800', lineHeight: 1, marginBottom: '0.5rem', color: '#1a1a1a' }}>
+                            {formatTimeMadrid(estadoFichaje.fichaje.hora_entrada)}
+                        </div>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.8rem', borderRadius: '20px', background: estadoFichaje.pausaActiva ? '#FFF3E0' : '#E8F5E9', color: estadoFichaje.pausaActiva ? '#EF6C00' : '#2E7D32', fontSize: '0.85rem', fontWeight: '600' }}>
+                            {estadoFichaje.pausaActiva ? (
+                                <><Pause size={14} /> EN PAUSA ({estadoFichaje.pausaActiva.tipo})</>
+                            ) : (
+                                <><Play size={14} /> TRABAJANDO</>
+                            )}
+                        </div>
+                    </div>
                 ) : (
-                    <div style={{ padding: '1rem', color: '#999' }}>
-                        <p>No tienes ningún turno activo en este momento.</p>
+                    <div style={{ color: '#aaa', padding: '1rem' }}>
+                        <Clock size={40} style={{ marginBottom: '0.5rem', opacity: 0.3 }} />
+                        <p style={{ margin: 0 }}>Sin actividad actual</p>
                     </div>
                 )}
             </div>
-          </div>
 
-          {/* Actions Card */}
-          <div className="feature-card" style={{ cursor: 'default', background: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-             <h3 style={{ margin: '0 0 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Play size={20} color="#EE1566" />
-                Acciones
-             </h3>
-
-             {error && (
-                <div style={{ color: '#c62828', background: '#ffebee', padding: '0.8rem', borderRadius: '8px', fontSize: '0.9rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <AlertCircle size={16} />
-                    {error}
+            {/* 2. Panel de Acciones */}
+            <div style={{ ...cardStyle }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#444' }}>ACCIONES RÁPIDAS</span>
+                    {loading && <RefreshCw size={16} className="spin" color="#EE1566" />}
                 </div>
-             )}
-             
-             {success && (
-                <div style={{ color: '#2e7d32', background: '#e8f5e9', padding: '0.8rem', borderRadius: '8px', fontSize: '0.9rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <CheckCircle size={16} />
-                    {success}
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
+                    {estadoFichaje?.puedeFicharEntrada && (
+                         <button 
+                            onClick={() => executeAction(() => fichajeService.ficharEntrada(empleadoId, userId), "Entrada registrada")}
+                            disabled={loading}
+                            style={actionBtnStyle('#1B5E20', '#E8F5E9')}
+                         >
+                            <LogIn size={20} /> <span style={{ fontWeight: '600' }}>ENTRADA</span>
+                         </button>
+                    )}
+                    
+                    {estadoFichaje?.puedeFinalizarPausa && (
+                         <button 
+                            onClick={() => executeAction(() => fichajeService.finalizarPausa(empleadoId), "Pausa finalizada")}
+                            disabled={loading}
+                            style={{ ...actionBtnStyle('#0D47A1', '#E3F2FD'), gridColumn: 'span 2' }}
+                         >
+                            <Play size={20} /> <span style={{ fontWeight: '600' }}>REANUDAR TRABAJO</span>
+                         </button>
+                    )}
+
+                    {estadoFichaje?.puedeIniciarPausa && (
+                         <button 
+                            onClick={() => executeAction(() => fichajeService.iniciarPausa(empleadoId, 'descanso'), "Pausa iniciada")}
+                            disabled={loading}
+                            style={actionBtnStyle('#E65100', '#FFF3E0')}
+                         >
+                            <Coffee size={20} /> <span style={{ fontWeight: '600' }}>PAUSA</span>
+                         </button>
+                    )}
+                    
+                    {estadoFichaje?.puedeFicharSalida && (
+                         <button 
+                            onClick={() => executeAction(() => fichajeService.ficharSalida(empleadoId, userId), "Salida registrada")}
+                            disabled={loading}
+                            style={actionBtnStyle('#B71C1C', '#FFEBEE')}
+                         >
+                            <LogOut size={20} /> <span style={{ fontWeight: '600' }}>SALIDA</span>
+                         </button>
+                    )}
+
+                    {!estadoFichaje && loading && <div style={{ gridColumn: 'span 2', textAlign: 'center', padding: '1rem', color: '#999', fontSize: '0.9rem' }}>Cargando disponibilidad...</div>}
                 </div>
-             )}
 
-             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                 {estadoFichaje?.puedeFicharEntrada && (
-                     <button 
-                        className="submit-btn" 
-                        onClick={handleFicharEntrada}
-                        disabled={loading}
-                        style={{ background: '#2E7D32', margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', padding: '1.5rem' }}
-                     >
-                        <LogIn size={24} />
-                        ENTRADA
-                     </button>
-                 )}
-                 
-                 {estadoFichaje?.puedeFinalizarPausa && (
-                      <button 
-                        className="submit-btn" 
-                        onClick={handleFinalizarPausa}
-                        disabled={loading}
-                        style={{ background: '#1565C0', margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', padding: '1.5rem', gridColumn: 'span 2' }}
-                     >
-                        <Play size={24} />
-                         REANUDAR
-                     </button>
-                 )}
-
-                 {estadoFichaje?.puedeIniciarPausa && (
-                      <button 
-                        className="submit-btn" 
-                        onClick={() => handleIniciarPausa('descanso')}
-                        disabled={loading}
-                        style={{ background: '#FF9800', margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', padding: '1.5rem' }}
-                     >
-                        <Coffee size={24} />
-                         PAUSA
-                     </button>
-                 )}
-                 
-                 {estadoFichaje?.puedeFicharSalida && (
-                      <button 
-                        className="submit-btn" 
-                        onClick={handleFicharSalida}
-                        disabled={loading}
-                        style={{ background: '#C62828', margin: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', padding: '1.5rem' }}
-                     >
-                        <LogOut size={24} />
-                         SALIDA
-                     </button>
-                 )}
-                 
-                 {!estadoFichaje && loading && (
-                     <div style={{ gridColumn: 'span 2', textAlign: 'center', padding: '1rem' }}>
-                         Cargando acciones...
-                     </div>
-                 )}
-             </div>
-          </div>
-      </div>
-
-       {/* Monthly Summary */}
-       {resumenMensual && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-              <div className="feature-card" style={{ padding: '1rem', textAlign: 'center', background: '#f8f9fa' }}>
-                  <p style={{ margin: '0 0 0.5rem', color: '#666', fontSize: '0.8rem' }}>DÍAS TRABAJADOS</p>
-                  <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>{resumenMensual.totalDias}</p>
-              </div>
-              <div className="feature-card" style={{ padding: '1rem', textAlign: 'center', background: '#f8f9fa' }}>
-                  <p style={{ margin: '0 0 0.5rem', color: '#666', fontSize: '0.8rem' }}>HORAS TOTALES</p>
-                  <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'bold', color: '#1565C0' }}>{resumenMensual.totalHoras?.toFixed(1)}h</p>
-              </div>
-              <div className="feature-card" style={{ padding: '1rem', textAlign: 'center', background: '#f8f9fa' }}>
-                  <p style={{ margin: '0 0 0.5rem', color: '#666', fontSize: '0.8rem' }}>DÍAS COMPLETOS</p>
-                  <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'bold', color: '#2E7D32' }}>{resumenMensual.diasCompletos}</p>
-              </div>
-          </div>
-       )}
-
-      {/* History Table */}
-      <div className="features-grid" style={{ gridTemplateColumns: '1fr' }}>
-        <div className="feature-card" style={{ cursor: 'default' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Calendar size={20} color="#EE1566" />
-                    Historial Reciente
-                </h3>
-                <button className="submit-btn" onClick={loadHistorial} style={{ width: 'auto', padding: '0.5rem 1rem', fontSize: '0.8rem', marginTop: 0 }}>
-                    Actualizar
-                </button>
+                <AnimatePresence>
+                    {error && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ marginTop: '0.8rem', padding: '0.5rem', borderRadius: '8px', background: '#FFEBEE', color: '#C62828', fontSize: '0.8rem', textAlign: 'center' }}>{error}</motion.div>}
+                    {success && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ marginTop: '0.8rem', padding: '0.5rem', borderRadius: '8px', background: '#E8F5E9', color: '#2E7D32', fontSize: '0.8rem', textAlign: 'center' }}>{success}</motion.div>}
+                </AnimatePresence>
             </div>
 
+            {/* 3. Resumen Rápido */}
+            <div style={{ ...cardStyle, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#444', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <BarChart size={16} /> ESTE MES
+                </span>
+                
+                {resumenMensual ? (
+                    <>
+                        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.5rem' }}>
+                            <span style={{ color: '#888', fontSize: '0.9rem' }}>Horas Totales</span>
+                            <span style={{ fontSize: '1.2rem', fontWeight: '700', color: '#EE1566' }}>{resumenMensual.totalHoras?.toFixed(1)}h</span>
+                        </div>
+                         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.5rem' }}>
+                            <span style={{ color: '#888', fontSize: '0.9rem' }}>Días Trabajados</span>
+                            <span style={{ fontSize: '1.1rem', fontWeight: '600' }}>{resumenMensual.totalDias}</span>
+                        </div>
+                        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ color: '#888', fontSize: '0.9rem' }}>Turnos Completos</span>
+                            <span style={{ fontSize: '1.1rem', fontWeight: '600', color: '#2E7D32' }}>{resumenMensual.diasCompletos}</span>
+                        </div>
+                    </>
+                ) : (
+                    <div style={{ textAlign: 'center', color: '#ccc', padding: '1rem' }}>Sin datos disponibles</div>
+                )}
+            </div>
+        </div>
+
+        {/* Historial Compacto */}
+        <div style={{ ...cardStyle, padding: '0' }}>
+            <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #f0f0f0' }}>
+               <h3 style={{ margin: 0, fontSize: '1rem', color: '#444' }}>Historial Reciente</h3>
+            </div>
             <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
-                    <thead>
-                        <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.05)' }}>
-                            <th style={{ padding: '1rem', color: '#999', fontSize: '0.8rem' }}>DIA</th>
-                            <th style={{ padding: '1rem', color: '#999', fontSize: '0.8rem' }}>ENTRADA</th>
-                            <th style={{ padding: '1rem', color: '#999', fontSize: '0.8rem' }}>SALIDA</th>
-                            <th style={{ padding: '1rem', color: '#999', fontSize: '0.8rem' }}>HORAS</th>
-                            <th style={{ padding: '1rem', color: '#999', fontSize: '0.8rem' }}>ESTADO</th>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                    <thead style={{ background: '#fafafa', color: '#888' }}>
+                        <tr>
+                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>FECHA</th>
+                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>HORARIO</th>
+                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontWeight: '600', fontSize: '0.8rem' }}>ESTADO</th>
+                            <th style={{ padding: '0.8rem 1.5rem', textAlign: 'right', fontWeight: '600', fontSize: '0.8rem' }}>TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {historial.length === 0 ? (
-                            <tr>
-                                <td colSpan="5" style={{ padding: '1.5rem', textAlign: 'center', color: '#999' }}>No se encontraron registros.</td>
-                            </tr>
-                        ) : (
-                            historial.map((fichaje) => (
-                                <tr key={fichaje.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-                                    <td style={{ padding: '1rem', fontWeight: 'bold' }}>{formatDateMadrid(fichaje.fecha)}</td>
-                                    <td style={{ padding: '1rem' }}>{formatTimeMadrid(fichaje.hora_entrada)}</td>
-                                    <td style={{ padding: '1rem' }}>{fichaje.hora_salida ? formatTimeMadrid(fichaje.hora_salida) : '-'}</td>
-                                    <td style={{ padding: '1rem' }}>{fichaje.horas_trabajadas ? `${fichaje.horas_trabajadas}h` : '-'}</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{
-                                            padding: '0.25rem 0.5rem',
-                                            borderRadius: '4px',
-                                            backgroundColor: fichaje.hora_salida ? 'rgba(76, 175, 80, 0.1)' : 'rgba(238, 21, 102, 0.1)',
-                                            color: fichaje.hora_salida ? '#2E7D32' : '#EE1566',
+                         {historial.length === 0 ? (
+                            <tr><td colSpan="4" style={{ padding: '2rem', textAlign: 'center', color: '#999' }}>No tienes registros este mes.</td></tr>
+                         ) : (
+                            historial.map((f, i) => (
+                                <tr key={f.id} style={{ borderBottom: i !== historial.length -1 ? '1px solid #f5f5f5' : 'none' }}>
+                                    <td style={{ padding: '0.8rem 1.5rem', fontWeight: '500' }}>{formatDateMadrid(f.fecha)}</td>
+                                    <td style={{ padding: '0.8rem 1.5rem', color: '#666' }}>
+                                        {formatTimeMadrid(f.hora_entrada)} - {f.hora_salida ? formatTimeMadrid(f.hora_salida) : '...'}
+                                    </td>
+                                    <td style={{ padding: '0.8rem 1.5rem' }}>
+                                         <span style={{
+                                            padding: '0.2rem 0.6rem',             
+                                            borderRadius: '12px',
                                             fontSize: '0.75rem',
-                                            fontWeight: 'bold'
+                                            fontWeight: '600',
+                                            display: 'inline-block',
+                                            background: f.hora_salida ? '#E8F5E9' : '#FFF3E0',
+                                            color: f.hora_salida ? '#2E7D32' : '#EF6C00'
                                         }}>
-                                            {fichaje.hora_salida ? 'COMPLETADO' : 'PENDIENTE'}
+                                            {f.hora_salida ? 'COMPLETADO' : 'PENDIENTE'}
                                         </span>
+                                    </td>
+                                    <td style={{ padding: '0.8rem 1.5rem', textAlign: 'right', fontWeight: '600', color: '#333' }}>
+                                        {f.horas_trabajadas ? `${Number(f.horas_trabajadas).toFixed(2)}h` : '-'}
                                     </td>
                                 </tr>
                             ))
-                        )}
+                         )}
                     </tbody>
                 </table>
             </div>
         </div>
+
       </div>
+      
+      <style>{`
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+      `}</style>
     </div>
   );
 };
