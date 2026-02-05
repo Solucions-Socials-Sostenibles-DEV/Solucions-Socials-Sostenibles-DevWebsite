@@ -23,10 +23,27 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
   width: 100vw;
-  overflow: hidden;
-  /* Prevent scrolling on the page level */
+}
+
+/* Desktop: fixed height with no scroll */
+@media (min-width: 901px) {
+  html,
+  body {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+/* Mobile: allow natural scrolling */
+@media (max-width: 900px) {
+  html,
+  body {
+    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 
 body {
