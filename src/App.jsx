@@ -186,9 +186,9 @@ function App() {
 
       <footer className="footer">
         <div className="footer-links">
-          <button className="nav-btn-link" style={{ fontSize: '0.8rem', color: '#666' }} onClick={() => setIsPrivacyOpen(true)}>Privacidad</button>
-          <button className="nav-btn-link" style={{ fontSize: '0.8rem', color: '#666' }} onClick={() => setIsCookiesOpen(true)}>Cookies</button>
-          <button className="nav-btn-link" style={{ fontSize: '0.8rem', color: '#666' }} onClick={() => setIsHelpOpen(true)}>Centro de ayuda</button>
+          <button className="nav-btn-link" onClick={() => setIsPrivacyOpen(true)}>Privacidad</button>
+          <button className="nav-btn-link" onClick={() => setIsCookiesOpen(true)}>Cookies</button>
+          <button className="nav-btn-link" onClick={() => setIsHelpOpen(true)}>Centro de ayuda</button>
         </div>
         <p>© {new Date().getFullYear()} IDONI BONCOR. Todos los derechos reservados.</p>
       </footer>

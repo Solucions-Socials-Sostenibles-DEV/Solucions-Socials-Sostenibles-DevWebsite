@@ -496,6 +496,17 @@
       padding: 0.8rem 1rem;
   }
   
+  /* Base styles for footer links (Desktop default) */
+  .footer-links .nav-btn-link {
+      font-size: 0.8rem;
+      color: #666;
+      padding: 0 0.5rem;
+  }
+
+  .footer-links .nav-btn-link:hover {
+      color: var(--color-primary);
+  }
+
   /* Footer - NATURAL FLOW */
   .footer {
       flex-shrink: 0;
@@ -513,13 +524,26 @@
   .footer-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
       justify-content: center;
       margin-bottom: 0.8rem;
   }
-}
+  .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem; /* Increased gap for mobile */
+      justify-content: center;
+      margin-bottom: 1.2rem;
+  }
 
-/* Desktop Utility to hide mobile stuff */
+  .footer-links .nav-btn-link {
+      font-size: 1rem; /* Larger font for mobile */
+      padding: 0.5rem 1rem; /* Clickable area */
+      color: #555; /* Slightly darker for better visibility */
+      width: 100%; /* Full width for easy tapping or remove for wrapped larger buttons */
+      width: auto;
+  }
+}
 @media (min-width: 901px) {
   .hamburger,
   .mobile-only-header,
