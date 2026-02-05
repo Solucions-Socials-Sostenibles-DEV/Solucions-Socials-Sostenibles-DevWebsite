@@ -96,7 +96,7 @@ function App() {
 
   return (
     <div className="container">
-      <nav className="navbar">
+      <nav className={`navbar ${isMenuOpen ? 'menu-open' : ''}`}>
         <div className="navbar-brand">
           <img src="/logo.png" alt="Logo" className="navbar-logo" />
           <h1>SOLUCIONS SOCIALS INTERNAL</h1>

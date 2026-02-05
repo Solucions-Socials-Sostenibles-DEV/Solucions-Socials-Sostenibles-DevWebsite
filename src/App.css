@@ -307,6 +307,15 @@
     cursor: pointer;
     color: #333;
     z-index: 3001;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  /* Hide hamburger when menu is open */
+  .navbar.menu-open .hamburger {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    display: none !important;
   }
 
   .navbar-overlay {
