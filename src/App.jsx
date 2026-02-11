@@ -100,14 +100,14 @@ function App() {
         <div className="navbar-brand">
           <img src="/logo.png" alt="Logo" className="navbar-logo" />
           <h1>SOLUCIONS SOCIALS INTERNAL</h1>
-          {!isMenuOpen && (
-            <button className="hamburger" onClick={() => setIsMenuOpen(true)} aria-label="Menu">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          )}
         </div>
+        {!isMenuOpen && (
+          <button className="hamburger" onClick={() => setIsMenuOpen(true)} aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        )}
         <div className={`navbar-overlay ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(false)}></div>
         <ul className={`navbar-links ${isMenuOpen ? 'active' : ''}`}>
           <li className="mobile-only-header">
