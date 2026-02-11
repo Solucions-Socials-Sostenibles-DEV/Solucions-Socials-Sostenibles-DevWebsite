@@ -1,0 +1,504 @@
+/* FichajePage.css */
+
+.fichaje-container {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8f9fa; /* Light background for the whole page */
+}
+
+.fichaje-content {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Header */
+.fichaje-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: #EE1566;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.user-details h2 {
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.user-details span {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background: transparent;
+  color: #666;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Grid Layout */
+.fichaje-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+/* Cards */
+.fichaje-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.fichaje-card.centered {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.card-label {
+  margin-bottom: 0.5rem;
+  color: #888;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status Display */
+.time-display {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+  font-variant-numeric: tabular-nums;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-badge.working {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.status-badge.paused {
+  background: #FFF3E0;
+  color: #EF6C00;
+}
+
+.no-activity {
+  color: #aaa;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Fast Actions */
+.actions-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.actions-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  flex: 1;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.2rem;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  transition: transform 0.1s, opacity 0.2s;
+}
+
+.action-btn:active {
+  transform: scale(0.98);
+}
+
+.action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.action-btn span {
+  font-weight: 600;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.action-btn.full-width {
+  grid-column: span 2;
+}
+
+/* Success/Error Alerts inside card */
+.alert-message {
+  margin-top: 0.8rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.alert-error {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+.alert-success {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+/* Summary Card */
+.summary-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.8rem;
+  padding-top: 0.2rem;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.summary-label {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.summary-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* History Table */
+.history-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.history-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.history-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #444;
+  font-weight: 600;
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 500px; /* Ensure table doesn't squash too much */
+}
+
+.history-table th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #888;
+  background: #fcfcfc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.history-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f5f5f5;
+  color: #333;
+}
+
+.history-table tr:last-child td {
+  border-bottom: none;
+}
+
+.status-pill {
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Login Screen Styles */
+.login-container {
+  width: 100%;
+  height: 100%;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.login-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+.login-icon {
+  background: #FFF0F5;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.login-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #1a1a1a;
+}
+
+.login-subtitle {
+  color: #888;
+  font-size: 0.95rem;
+  margin: 0 0 2rem;
+}
+
+.login-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 8px;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  outline: none;
+  background: #fafafa;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.login-input:focus {
+  background: white;
+  border-color: #EE1566;
+  box-shadow: 0 0 0 4px rgba(238, 21, 102, 0.1);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 1rem;
+  background: #EE1566;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.login-btn:hover {
+  background: #d00e55;
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+.login-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.back-btn {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: none;
+  color: #999;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Animations */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Responsive Media Queries --- */
+
+@media (max-width: 768px) {
+  .fichaje-grid {
+    grid-template-columns: 1fr; /* Stack cards vertically on tablets/mobiles */
+    gap: 1rem;
+  }
+  
+  .fichaje-container {
+    padding: 0.5rem;
+  }
+
+  .fichaje-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .fichaje-header > div:last-child {
+      width: 100%;
+      justify-content: flex-end;
+  }
+
+  .time-display {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.5rem;
+    max-width: 100%;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+
+  .fichaje-card {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .actions-grid {
+    gap: 0.5rem;
+  }
+  
+  .action-btn {
+    padding: 1rem;
+    min-height: 90px;
+  }
+  
+  .action-btn span {
+     font-size: 0.8rem;
+  }
+  
+  .history-table th, .history-table td {
+      padding: 0.6rem 0.5rem;
+      font-size: 0.8rem;
+  }
+  
+  .status-pill {
+      padding: 0.2rem 0.5rem;
+      font-size: 0.7rem;
+  }
+}
