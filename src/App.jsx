@@ -120,12 +120,12 @@ function App() {
           </li>
           <li><a href="#inicio" onClick={(e) => { e.preventDefault(); setCurrentView('home'); setIsMenuOpen(false); }}>INICIO</a></li>
           <li><button className="nav-btn-link" onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}>CONTACTO</button></li>
+          <li><button className="nav-btn-link" onClick={() => { setCurrentView('fichaje'); setIsMenuOpen(false); }}>FICHAJE</button></li>
           {user ? (
             <>
               {userRole === 'admin' && (
                 <li><button className="nav-btn-link" onClick={() => { setCurrentView('dashboard'); setIsMenuOpen(false); }}>PANEL</button></li>
               )}
-              <li><button className="nav-btn-link" onClick={() => { setCurrentView('fichaje'); setIsMenuOpen(false); }}>FICHAJE</button></li>
               <li><button className="login-btn" onClick={handleLogout}>CERRAR SESIÓN</button></li>
             </>
           ) : (
@@ -136,8 +136,8 @@ function App() {
 
       {currentView === 'dashboard' && user && userRole === 'admin' ? (
         <AdminDashboard onBack={() => setCurrentView('home')} />
-      ) : currentView === 'fichaje' && user ? (
-        <FichajePage onBack={() => setCurrentView('home')} userId={user.id} />
+      ) : currentView === 'fichaje' ? (
+        <FichajePage onBack={() => setCurrentView('home')} userId={user?.id} />
       ) : (
         <>
           <header className="header" id="inicio">
