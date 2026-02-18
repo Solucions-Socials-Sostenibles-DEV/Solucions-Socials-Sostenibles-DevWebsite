@@ -7,6 +7,7 @@ import PrivacyModal from './PrivacyModal';
 import LoginModal from './LoginModal';
 import AdminDashboard from './AdminDashboard';
 import FichajePage from './FichajePage';
+import FichajeCodigosAdmin from './FichajeCodigosAdmin';
 import { supabase } from './supabaseClient';
 import ReleaseNotesModal from './ReleaseNotesModal';
 import { useGitHubRelease } from './hooks/useGitHubRelease';
@@ -121,6 +122,9 @@ function App() {
           <li><a href="#inicio" onClick={(e) => { e.preventDefault(); setCurrentView('home'); setIsMenuOpen(false); }}>INICIO</a></li>
           <li><button className="nav-btn-link" onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}>CONTACTO</button></li>
           <li><button className="nav-btn-link" onClick={() => { setCurrentView('fichaje'); setIsMenuOpen(false); }}>FICHAJE</button></li>
+          {user && (
+             <li><button className="nav-btn-link" onClick={() => { setCurrentView('codigos_fichaje'); setIsMenuOpen(false); }}>CÓDIGOS FICHAJE</button></li>
+          )}
           {user ? (
             <>
               {userRole === 'admin' && (
@@ -138,6 +142,8 @@ function App() {
         <AdminDashboard onBack={() => setCurrentView('home')} />
       ) : currentView === 'fichaje' ? (
         <FichajePage onBack={() => setCurrentView('home')} userId={user?.id} />
+      ) : currentView === 'codigos_fichaje' && user ? (
+        <FichajeCodigosAdmin userId={user?.id} />
       ) : (
         <>
           <header className="header" id="inicio">
