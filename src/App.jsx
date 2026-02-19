@@ -212,6 +212,8 @@ function App() {
         onLoginSuccess={(user, role) => {
           setUser(user);
           setUserRole(role);
+          setIsLoginOpen(false);
+          setIsMenuOpen(false);
         }}
       />
       <ReleaseNotesModal
