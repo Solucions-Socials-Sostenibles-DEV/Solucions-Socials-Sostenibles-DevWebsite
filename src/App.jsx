@@ -143,7 +143,7 @@ function App() {
       ) : currentView === 'fichaje' ? (
         <FichajePage onBack={() => setCurrentView('home')} userId={user?.id} />
       ) : currentView === 'codigos_fichaje' && user ? (
-        <FichajeCodigosAdmin userId={user?.id} />
+        <FichajeCodigosAdmin userId={user?.id} userRole={userRole} />
       ) : (
         <>
           <header className="header" id="inicio">

@@ -4,13 +4,15 @@ import fichajesCodigosService from './services/fichajesCodigosService';
 import { Plus, Upload, Edit2, Trash2, Search, X } from 'lucide-react';
 import './FichajeCodigosAdmin.css';
 
-const FichajeCodigosAdmin = ({ userId }) => {
+const FichajeCodigosAdmin = ({ userId, userRole }) => {
   const [codigos, setCodigos] = useState([]);
   const [empleados, setEmpleados] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+
+  const hasFullAccess = userRole === 'admin' || userRole === 'jefe';
   
   const [formData, setFormData] = useState({
     id: null,
@@ -177,21 +179,25 @@ const FichajeCodigosAdmin = ({ userId }) => {
             />
           </div>
 
-          <div className="import-controls">
-            <label htmlFor="file-upload" className="btn-secondary">
-              <Upload size={18} /> Importar Excel
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".xlsx, .xls"
-              onChange={handleImport}
-            />
-          </div>
+          {hasFullAccess && (
+            <>
+              <div className="import-controls">
+                <label htmlFor="file-upload" className="btn-secondary">
+                  <Upload size={18} /> Importar Excel
+                </label>
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept=".xlsx, .xls"
+                  onChange={handleImport}
+                />
+              </div>
 
-          <button className="btn-primary" onClick={() => handleOpenModal()}>
-            <Plus size={18} /> Nuevo Código
-          </button>
+              <button className="btn-primary" onClick={() => handleOpenModal()}>
+                <Plus size={18} /> Nuevo Código
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -203,7 +209,7 @@ const FichajeCodigosAdmin = ({ userId }) => {
               <th>Empleado</th>
               <th>Descripción</th>
               <th>Estado</th>
-              <th>Acciones</th>
+              {hasFullAccess && <th>Acciones</th>}
             </tr>
           </thead>
           <tbody>
@@ -222,20 +228,22 @@ const FichajeCodigosAdmin = ({ userId }) => {
                         {code.activo ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
-                    <td data-label="Acciones" className="actions-cell">
-                      <button className="action-btn edit" onClick={() => handleOpenModal(code)} title="Editar">
-                        <Edit2 size={18} />
-                      </button>
-                      <button className="action-btn delete" onClick={() => handleDelete(code.id)} title="Desactivar">
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
+                    {hasFullAccess && (
+                      <td data-label="Acciones" className="actions-cell">
+                        <button className="action-btn edit" onClick={() => handleOpenModal(code)} title="Editar">
+                          <Edit2 size={18} />
+                        </button>
+                        <button className="action-btn delete" onClick={() => handleDelete(code.id)} title="Desactivar">
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>
+                <td colSpan={hasFullAccess ? "5" : "4"} style={{ textAlign: 'center', padding: '2rem' }}>
                   No se encontraron códigos.
                 </td>
               </tr>
