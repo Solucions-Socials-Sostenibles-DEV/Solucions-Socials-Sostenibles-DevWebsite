@@ -266,7 +266,7 @@
     display: none;
   }
 
-  .fichajes-table, .fichajes-table tbody, .fichajes-table tr, .fichajes-table td {
+  .fichajes-table, .fichajes-table tbody, .fichajes-table tr {
     display: block;
     width: 100%;
   }
@@ -280,25 +280,25 @@
     margin-bottom: 1rem;
     border: 1px solid #eee;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 0;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
   }
 
   .fichajes-table td {
-    text-align: right;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #f9f9f9;
-    position: relative;
-    padding-left: 50%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: right;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f9f9f9;
+    word-break: break-word;
+    gap: 1rem;
   }
 
   .fichajes-table td:last-child {
     border-bottom: none;
-    padding-bottom: 0;
   }
 
   .fichajes-table td::before {
@@ -306,7 +306,7 @@
     text-align: left;
     font-weight: 600;
     color: #555;
-    flex-basis: 40%;
+    flex: 0 0 35%;
   }
 
   .fichajes-table td.actions-cell {
