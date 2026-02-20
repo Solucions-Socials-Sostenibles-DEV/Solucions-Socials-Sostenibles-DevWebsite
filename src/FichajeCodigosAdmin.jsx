@@ -214,15 +214,15 @@ const FichajeCodigosAdmin = ({ userId }) => {
                 
                 return (
                   <tr key={code.id}>
-                    <td><strong>{code.codigo}</strong></td>
-                    <td>{empleadoNombre}</td>
-                    <td>{code.descripcion || '-'}</td>
-                    <td>
+                    <td data-label="Código"><strong>{code.codigo}</strong></td>
+                    <td data-label="Empleado">{empleadoNombre}</td>
+                    <td data-label="Descripción">{code.descripcion || '-'}</td>
+                    <td data-label="Estado">
                       <span className={`status-badge ${code.activo ? 'status-active' : 'status-inactive'}`}>
                         {code.activo ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Acciones" className="actions-cell">
                       <button className="action-btn edit" onClick={() => handleOpenModal(code)} title="Editar">
                         <Edit2 size={18} />
                       </button>
