@@ -2,6 +2,19 @@
 import fichajeSupabaseService from "./fichajeSupabaseService";
 
 class FichajeService {
+  async obtenerUbicacionPorIP() {
+    try {
+      const response = await fetch("http://ip-api.com/json/?fields=lat,lon,status");
+      const datos = await response.json();
+      if (datos.status === "success") {
+        return { latitud: datos.lat, longitud: datos.lon };
+      }
+      return { latitud: null, longitud: null };
+    } catch {
+      return { latitud: null, longitud: null };
+    }
+  }
+
   async ficharEntrada(empleadoId, userId) {
     try {
       const hoy = new Date();
@@ -21,11 +34,16 @@ class FichajeService {
       // Cerrar fichajes pendientes antes de crear uno nuevo
       await this.verificarYcerrarFichajesOlvidados(empleadoId);
 
+      // Obtener ubicación aproximada por IP
+      const { latitud, longitud } = await this.obtenerUbicacionPorIP();
+
       // Crear nuevo fichaje
       const resultado = await fichajeSupabaseService.crearFichajeEntrada(
         empleadoId,
         hoy,
         userId,
+        latitud,
+        longitud,
       );
 
       if (!resultado.success) return resultado;

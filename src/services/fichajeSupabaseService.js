@@ -5,7 +5,7 @@ import { supabase } from '../supabaseClient'; // Reuse existing client
 class FichajeSupabaseService {
   // ===== OPERACIONES CRUD BÁSICAS =====
 
-  async crearFichajeEntrada(empleadoId, fecha, userId = null) {
+  async crearFichajeEntrada(empleadoId, fecha, userId = null, latitud = null, longitud = null) {
     try {
       // Ensuring fecha is just the YYYY-MM-DD part if a Date object is passed
       const fechaStr = fecha instanceof Date ? fecha.toISOString().split("T")[0] : fecha;
@@ -18,6 +18,8 @@ class FichajeSupabaseService {
           // hora_entrada: null, // Let the trigger set it to now()
           created_by: userId,
           es_modificado: false,
+          latitud: latitud,
+          longitud: longitud,
         })
         .select()
         .single();
