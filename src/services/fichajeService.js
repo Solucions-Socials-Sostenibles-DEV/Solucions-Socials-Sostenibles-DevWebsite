@@ -4,13 +4,13 @@ import fichajeSupabaseService from "./fichajeSupabaseService";
 class FichajeService {
   async obtenerUbicacionPorIP() {
     try {
-      const response = await fetch("http://ip-api.com/json/?fields=status,lat,lon,city,country");
+      const response = await fetch("https://ipapi.co/json/");
       const datos = await response.json();
-      if (datos.status === "success") {
-        const texto = [datos.city, datos.country].filter(Boolean).join(", ");
+      if (datos.latitude && datos.longitude) {
+        const texto = [datos.city, datos.country_name].filter(Boolean).join(", ");
         return {
-          ubicacion_lat: datos.lat,
-          ubicacion_lng: datos.lon,
+          ubicacion_lat: datos.latitude,
+          ubicacion_lng: datos.longitude,
           ubicacion_texto: texto || null,
         };
       }
