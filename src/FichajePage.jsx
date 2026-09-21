@@ -174,7 +174,7 @@ const FichajePage = ({ onBack, userId }) => {
                 className="login-card"
             >
                 <div className="login-icon">
-                    <Clock size={28} color="#EE1566" />
+                    <Clock size={28} color="currentColor" />
                 </div>
                 
                 <h2 className="login-title">Fichaje</h2>
@@ -206,7 +206,7 @@ const FichajePage = ({ onBack, userId }) => {
                     <button 
                         type="submit" 
                         disabled={validandoCodigo || !codigoFichaje}
-                        className="login-btn"
+                        className="fichaje-login-btn"
                     >
                         {validandoCodigo ? 'Verificando...' : 'Acceder'}
                     </button>
@@ -277,7 +277,7 @@ const FichajePage = ({ onBack, userId }) => {
             <div className="fichaje-card">
                 <div className="actions-header">
                     <span className="actions-title">ACCIONES RÁPIDAS</span>
-                    {loading && <RefreshCw size={16} className="spin" color="#EE1566" />}
+                    {loading && <RefreshCw size={16} className="spin" color="var(--primary)" />}
                 </div>
 
                 <div className="actions-grid">
@@ -353,7 +353,7 @@ const FichajePage = ({ onBack, userId }) => {
                     <>
                         <div className="summary-item">
                             <span className="summary-label">Horas Totales</span>
-                            <span className="summary-value" style={{ color: '#EE1566' }}>{resumenMensual.totalHoras?.toFixed(1)}h</span>
+                            <span className="summary-value" style={{ color: 'var(--primary)' }}>{resumenMensual.totalHoras?.toFixed(1)}h</span>
                         </div>
                          <div className="summary-item">
                             <span className="summary-label">Días Trabajados</span>

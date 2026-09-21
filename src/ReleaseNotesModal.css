@@ -4,51 +4,44 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 5000;
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.25s ease-out;
 }
 
 .release-notes-modal {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2.5rem;
-    border-radius: 24px;
+    background: var(--surface);
+    padding: 32px;
+    border-radius: var(--radius-card);
     width: 90%;
     max-width: 700px;
     max-height: 85vh;
     position: relative;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-modal);
+    border: 1px solid var(--border);
+    animation: slideUp 0.28s ease-out;
     display: flex;
     flex-direction: column;
 }
 
-.dark-mode .release-notes-modal {
-    background: rgba(30, 30, 30, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
 .release-notes-close {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 16px;
+    right: 16px;
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
+    padding: 8px;
+    border-radius: 8px;
     transition: background-color 0.2s;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .release-notes-close:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--hover);
 }
 
 .release-notes-close svg {
@@ -56,117 +49,96 @@
 }
 
 .release-notes-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.dark-mode .release-notes-header {
-    border-bottom-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
 }
 
 .release-notes-header h2 {
-    font-size: 1.8rem;
-    color: var(--color-primary, #EE1566);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
     margin: 0;
 }
 
 .release-tag {
     display: inline-block;
-    background: var(--color-primary, #EE1566);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid var(--primary-border);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    margin-top: 8px;
 }
 
 .release-notes-content {
     overflow-y: auto;
-    padding-right: 0.5rem;
+    padding-right: 8px;
     flex: 1;
     text-align: left;
+    color: var(--text);
 }
 
-/* Markdown Styles */
 .release-notes-content h1,
 .release-notes-content h2,
 .release-notes-content h3 {
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
-    color: #333;
-}
-
-.dark-mode .release-notes-content h1,
-.dark-mode .release-notes-content h2,
-.dark-mode .release-notes-content h3 {
-    color: #eee;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    color: var(--text);
 }
 
 .release-notes-content ul {
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
+    padding-left: 20px;
+    margin-bottom: 12px;
 }
 
 .release-notes-content li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 6px;
     line-height: 1.5;
 }
 
 .release-notes-content p {
-    margin-bottom: 1rem;
+    margin-bottom: 12px;
     line-height: 1.6;
+    color: var(--text-secondary);
 }
 
-/* Scrollbar */
 .release-notes-content::-webkit-scrollbar {
     width: 6px;
 }
 
 .release-notes-content::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--hover);
     border-radius: 3px;
 }
 
 .release-notes-content::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--border);
     border-radius: 3px;
 }
 
-.dark-mode .release-notes-content::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.dark-mode .release-notes-content::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-}
-
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.95);
+        transform: translateY(8px);
     }
-
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
     }
 }
 
 @media (max-width: 600px) {
     .release-notes-modal {
-        padding: 1.5rem;
+        padding: 24px;
         width: 95%;
         max-height: 90vh;
     }

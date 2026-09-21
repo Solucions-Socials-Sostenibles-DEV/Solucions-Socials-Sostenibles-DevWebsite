@@ -22,17 +22,7 @@ function HelpModal({ isOpen, onClose }) {
 
                     <a
                         href="mailto:comunicacio@solucionssocials.org"
-                        style={{
-                            color: 'var(--color-primary, #EE1566)',
-                            fontWeight: 600,
-                            fontSize: '1.1rem',
-                            textDecoration: 'none',
-                            display: 'block',
-                            textAlign: 'center',
-                            padding: '1rem',
-                            background: 'rgba(238, 21, 102, 0.05)',
-                            borderRadius: '12px'
-                        }}
+                        className="help-mail"
                     >
                         comunicacio@solucionssocials.org
                     </a>

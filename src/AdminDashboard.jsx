@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
-import './ContactModal.css'; // Reusing standard styles
+import './ContactModal.css';
 
 function AdminDashboard({ onBack }) {
     const [messages, setMessages] = useState([]);
@@ -37,67 +37,58 @@ function AdminDashboard({ onBack }) {
     };
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto', paddingTop: '100px', width: '100%', boxSizing: 'border-box' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', gap: '1rem', flexWrap: 'wrap' }}>
-                <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', margin: 0 }}>Panel de Administración</h1>
-                <button className="submit-btn" onClick={onBack} style={{ width: 'auto', padding: '0.8rem 1.5rem', backgroundColor: '#333', marginTop: 0 }}>
-                    Volver a la Web
+        <div className="admin-page">
+            <div className="admin-header">
+                <h1>Panel de administración</h1>
+                <button className="doc-btn" onClick={onBack}>
+                    Volver
                 </button>
             </div>
 
-            <div className="features-grid" style={{ gridTemplateColumns: '1fr' }}>
-                <div className="feature-card" style={{ cursor: 'default', overflow: 'hidden' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
-                        <h3 style={{ margin: 0 }}>Mensajes Recibidos</h3>
-                        <button className="submit-btn" onClick={fetchMessages} style={{ width: 'auto', padding: '0.5rem 1rem', fontSize: '0.8rem', marginTop: 0 }}>
-                            Actualizar
-                        </button>
-                    </div>
-
-                    {loading ? (
-                        <p>Cargando mensajes...</p>
-                    ) : error ? (
-                        <p style={{ color: 'red' }}>{error}</p>
-                    ) : messages.length === 0 ? (
-                        <p>No hay mensajes nuevos.</p>
-                    ) : (
-                        <div style={{ overflowX: 'auto', width: '100%' }}>
-                            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
-                                <thead>
-                                    <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.1)' }}>
-                                        <th style={{ padding: '1rem', color: '#999' }}>Fecha</th>
-                                        <th style={{ padding: '1rem', color: '#999' }}>Nombre</th>
-                                        <th style={{ padding: '1rem', color: '#999' }}>Asunto</th>
-                                        <th style={{ padding: '1rem', color: '#999' }}>Mensaje</th>
-                                        <th style={{ padding: '1rem', color: '#999' }}>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {messages.map((msg) => (
-                                        <tr key={msg.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-                                            <td style={{ padding: '1rem', whiteSpace: 'nowrap', fontSize: '0.9rem' }}>{formatDate(msg.created_at)}</td>
-                                            <td style={{ padding: '1rem', fontWeight: 'bold' }}>{msg.name}</td>
-                                            <td style={{ padding: '1rem' }}>{msg.subject}</td>
-                                            <td style={{ padding: '1rem', minWidth: '200px', lineHeight: '1.5' }}>{msg.message}</td>
-                                            <td style={{ padding: '1rem' }}>
-                                                <span style={{
-                                                    padding: '0.25rem 0.5rem',
-                                                    borderRadius: '4px',
-                                                    backgroundColor: msg.status === 'nuevo' ? 'rgba(238, 21, 102, 0.1)' : 'rgba(0,0,0,0.05)',
-                                                    color: msg.status === 'nuevo' ? '#EE1566' : '#999',
-                                                    fontSize: '0.8rem',
-                                                    whiteSpace: 'nowrap'
-                                                }}>
-                                                    {msg.status || 'recibido'}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
+            <div className="admin-card">
+                <div className="admin-header" style={{ marginBottom: '1rem' }}>
+                    <h3>Mensajes recibidos</h3>
+                    <button className="download-btn compact" onClick={fetchMessages}>
+                        Actualizar
+                    </button>
                 </div>
+
+                {loading ? (
+                    <p>Cargando mensajes...</p>
+                ) : error ? (
+                    <p style={{ color: 'var(--error)' }}>{error}</p>
+                ) : messages.length === 0 ? (
+                    <p>No hay mensajes nuevos.</p>
+                ) : (
+                    <div style={{ overflowX: 'auto', width: '100%' }}>
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Nombre</th>
+                                    <th>Asunto</th>
+                                    <th>Mensaje</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {messages.map((msg) => (
+                                    <tr key={msg.id}>
+                                        <td style={{ whiteSpace: 'nowrap' }}>{formatDate(msg.created_at)}</td>
+                                        <td style={{ fontWeight: 700 }}>{msg.name}</td>
+                                        <td>{msg.subject}</td>
+                                        <td style={{ minWidth: '200px', lineHeight: 1.5 }}>{msg.message}</td>
+                                        <td>
+                                            <span className={msg.status === 'nuevo' ? 'status-nuevo' : 'status-recibido'}>
+                                                {msg.status || 'recibido'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
         </div>
     );

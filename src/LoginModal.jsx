@@ -65,7 +65,7 @@ function LoginModal({ isOpen, onClose, onLoginSuccess }) {
                 <p className="contact-subtitle">Accede a tu cuenta para comenzar.</p>
 
                 {error && (
-                    <div style={{ backgroundColor: '#ffebee', color: '#c62828', padding: '0.8rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                    <div className="form-error">
                         {error}
                     </div>
                 )}

@@ -20,12 +20,12 @@ function CookiesModal({ isOpen, onClose }) {
                         En <strong>Solucions Socials Sostenibles</strong> utilizamos cookies propias y de terceros para mejorar nuestros servicios y mostrarle publicidad relacionada con sus preferencias mediante el análisis de sus hábitos de navegación.
                     </p>
 
-                    <h3 style={{ color: 'var(--color-primary, #EE1566)', fontSize: '1.1rem', marginTop: '1rem' }}>¿Qué son las cookies?</h3>
+                    <h3 className="modal-section-title">¿Qué son las cookies?</h3>
                     <p>
                         Una cookie es un fichero que se descarga en su ordenador al acceder a determinadas páginas web. Las cookies permiten a una página web, entre otras cosas, almacenar y recuperar información sobre los hábitos de navegación de un usuario o de su equipo y, dependiendo de la información que contengan y de la forma en que utilice su equipo, pueden utilizarse para reconocer al usuario.
                     </p>
 
-                    <h3 style={{ color: 'var(--color-primary, #EE1566)', fontSize: '1.1rem', marginTop: '1rem' }}>Tipos de cookies que utilizamos</h3>
+                    <h3 className="modal-section-title">Tipos de cookies que utilizamos</h3>
                     <ul style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                         <li><strong>Cookies técnicas:</strong> Son aquellas que permiten al usuario la navegación a través de una página web, plataforma o aplicación y la utilización de las diferentes opciones o servicios que en ella existan.</li>
                         <li><strong>Cookies de análisis:</strong> Son aquellas que nos permiten cuantificar el número de usuarios y así realizar la medición y análisis estadístico de la utilización que hacen los usuarios del servicio ofertado.</li>

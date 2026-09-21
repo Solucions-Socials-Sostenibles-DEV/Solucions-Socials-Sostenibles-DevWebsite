@@ -20,19 +20,19 @@ function PrivacyModal({ isOpen, onClose }) {
                         En <strong>Solucions Socials Sostenibles</strong> nos tomamos muy en serio la privacidad de sus datos. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos su información personal.
                     </p>
 
-                    <h3 style={{ color: 'var(--color-primary, #EE1566)', fontSize: '1.1rem', marginTop: '1rem' }}>Responsable del tratamiento</h3>
+                    <h3 className="modal-section-title">Responsable del tratamiento</h3>
                     <p>
-                        El responsable del tratamiento de sus datos es Solucions Socials Sostenibles. Puede contactar con nosotros para cualquier cuestión relacionada con la privacidad en: <a href="mailto:comunicacio@solucionssocials.org" style={{ color: 'var(--color-primary, #EE1566)', textDecoration: 'none' }}>comunicacio@solucionssocials.org</a>.
+                        El responsable del tratamiento de sus datos es Solucions Socials Sostenibles. Puede contactar con nosotros para cualquier cuestión relacionada con la privacidad en: <a href="mailto:comunicacio@solucionssocials.org" className="help-mail" style={{ display: 'inline', padding: 0, background: 'none', border: 'none' }}>comunicacio@solucionssocials.org</a>.
                     </p>
 
-                    <h3 style={{ color: 'var(--color-primary, #EE1566)', fontSize: '1.1rem', marginTop: '1rem' }}>Finalidad del tratamiento</h3>
+                    <h3 className="modal-section-title">Finalidad del tratamiento</h3>
                     <ul style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                         <li>Gestionar sus consultas y solicitudes enviadas a través de nuestro formulario de contacto.</li>
                         <li>Mejorar nuestros servicios y experiencia de usuario.</li>
                         <li>En caso de suscripción, enviarle comunicaciones relacionadas con nuestros productos y novedades.</li>
                     </ul>
 
-                    <h3 style={{ color: 'var(--color-primary, #EE1566)', fontSize: '1.1rem', marginTop: '1rem' }}>Derechos del usuario</h3>
+                    <h3 className="modal-section-title">Derechos del usuario</h3>
                     <p>
                         Usted tiene derecho a acceder, rectificar, suprimir, oponerse, limitar el tratamiento y portar sus datos. Para ejercer estos derechos, envíe una solicitud a nuestro correo electrónico de contacto.
                     </p>
